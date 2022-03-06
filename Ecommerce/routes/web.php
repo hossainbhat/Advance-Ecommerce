@@ -2,16 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -19,91 +9,113 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/admin')->namespace('Admin')->group(function(){
 
+    Route::match(['get','post'],'/', [App\Http\Controllers\Admin\AdminController::class, 'login']);
+    
+    Route::group(['middleware' => ['admin']], function () {
+        Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard']);
+        Route::get('/logout', [App\Http\Controllers\Admin\AdminController::class, 'logout']);
+        Route::match(['get','post'],'/profile', [App\Http\Controllers\Admin\AdminController::class, 'profile']);
+        Route::get('/delete-profile-image/{id}', [App\Http\Controllers\Admin\AdminController::class, 'deleteProfileImage']);
+        Route::post('/check-pwd', [App\Http\Controllers\Admin\AdminController::class, 'chkPassword']);
+        Route::post('/update-pwd', [App\Http\Controllers\Admin\AdminController::class, 'updatePassword']);
 
- Route::match(['get','post'],'/', 'AdminController@login');
-
-
- Route::group(['middleware' => ['admin']], function () {
-
-  Route::get('/dashboard', 'AdminController@dashboard');
-  Route::get('/setting', 'AdminController@settings');
-  Route::post('/check-pwd','AdminController@chkPassword');
-  Route::post('/update-pwd','AdminController@updatePassword');
-  Route::match(['get','post'],'/admin-details','AdminController@adminDetails');
-  Route::get('/logout', 'AdminController@logout');
-
-  //sections
-   Route::get('/sections', 'SectionController@sections');
-   Route::post('/update-section-status','SectionController@updateSectionStatus');
-   Route::match(['get','post'],'/add-edit-section/{id?}','SectionController@addEditSection');
-   Route::get('delete-section/{id}','SectionController@deleteSection');
-   //brands
-    Route::get('/brands', 'BrandController@brands');
-    Route::post('/update-brand-status','BrandController@updateBrandStatus');
-    Route::match(['get','post'],'/add-edit-brand/{id?}','BrandController@addEditBrand');
-    Route::get('delete-brand/{id}','BrandController@deleteBrand');
-   //categories
-   Route::get('/categories','CategoryController@categories');
-   Route::post('/update-category-status','CategoryController@updateCategoryStatus');
-   Route::match(['get','post'],'/add-edit-category/{id?}','CategoryController@addEditCategory');
-   Route::post('appendcategorieslavel','CategoryController@appendCategoriesLevel');
-   Route::get('delete-category-image/{id}','CategoryController@deleteCategoryImage');
-   Route::get('delete-category/{id}','CategoryController@deleteCategory');
-
-   //products
-  Route::get('/products','ProductController@products');
-  Route::post('/update-product-status','ProductController@updateProductStatus');
-  Route::get('delete-product/{id}','ProductController@deleteProduct');
-  Route::match(['get','post'],'/add-edit-product/{id?}','ProductController@addEditProduct');
-  Route::get('delete-product-image/{id}','ProductController@deleteProductImage');
-  Route::get('delete-product-video/{id}','ProductController@deleteProductVideo');
-
-  //product attribute
-  Route::match(['get','post'],'/add-edit-product-attribute/{id?}','ProductController@addEditProductAttribute');
-  Route::post('edit-attribute/{id}','ProductController@editAttributes');
-  Route::post('update-attribute-status','ProductController@updateAttributeStatus');
-  Route::get('delete-attribute/{id}','ProductController@deleteAttribute');
-
-  //product images
-  Route::match(['get','post'],'/add-edit-product-image/{id?}','ProductController@addEditProductImage');
-  Route::get('delete-proImages/{id}','ProductController@deleteproductImages');
-  Route::post('/update-image-status','ProductController@updateImageStatus');
-
-  //banner
-  Route::get('/banners','BannerController@banners');
-  Route::match(['get','post'],'/add-edit-banner/{id?}','BannerController@addEditBanner');
-  Route::post('/update-banner-status','BannerController@updateBannerStatus');
-  Route::get('delete-banner-image/{id}','BannerController@deleteBannerImages');
-  Route::get('delete-banner/{id}','BannerController@deleteBanner');
-});
-
-});
+        //sections
+        Route::get('/sections', [App\Http\Controllers\Admin\SectionController::class, 'sections']);
+        Route::post('update-section-status', [App\Http\Controllers\Admin\SectionController::class, 'updateSectionStatus']);
+        Route::match(['get','post'],'/add-edit-section/{id?}', [App\Http\Controllers\Admin\SectionController::class, 'addEditSection']);
+        Route::get('delete-section/{id}', [App\Http\Controllers\Admin\SectionController::class, 'deleteSection']);
+        //brands
+        Route::get('/brands', [App\Http\Controllers\Admin\BrandController::class, 'brands']);
+        Route::post('update-brand-status', [App\Http\Controllers\Admin\BrandController::class, 'updateBrandStatus']);
+        Route::match(['get','post'],'/add-edit-brand/{id?}', [App\Http\Controllers\Admin\BrandController::class, 'addEditBrand']);
+        Route::get('delete-brand/{id}', [App\Http\Controllers\Admin\BrandController::class, 'deleteBrand']);
+        //categories
+        Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'categories']);
+        Route::post('update-category-status', [App\Http\Controllers\Admin\CategoryController::class, 'updateCategoryStatus']);
+        Route::match(['get','post'],'/add-edit-category/{id?}',[App\Http\Controllers\Admin\CategoryController::class, 'addEditCategory']);
+        Route::post('appendcategorieslavel', [App\Http\Controllers\Admin\CategoryController::class, 'appendCategoriesLevel']);
+        Route::get('delete-category-image/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'deleteCategoryImage']);
+        Route::get('delete-category/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'deleteCategory']);
+        //products
+        Route::get('/products', [App\Http\Controllers\Admin\ProductController::class, 'products']);
+        Route::post('update-product-status', [App\Http\Controllers\Admin\ProductController::class, 'updateProductStatus']);
+        Route::match(['get','post'],'/add-edit-product/{id?}', [App\Http\Controllers\Admin\ProductController::class, 'addEditProduct']);
+        Route::get('delete-product/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteProduct']);
+        Route::get('delete-product-image/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteProductImage']);
+        Route::get('delete-product-video/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteProductVideo']);
+        //product attribute
+        Route::match(['get','post'],'/add-edit-product-attribute/{id?}', [App\Http\Controllers\Admin\ProductController::class, 'addEditProductAttribute']);
+        Route::post('edit-attribute/{id}', [App\Http\Controllers\Admin\ProductController::class, 'editAttributes']);
+        Route::post('update-attribute-status', [App\Http\Controllers\Admin\ProductController::class, 'updateAttributeStatus']);
+        Route::get('/delete-attribute/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteAttribute']);
+        //product images
+        Route::match(['get','post'],'/add-edit-product-image/{id?}', [App\Http\Controllers\Admin\ProductController::class, 'addEditProductImage']);
+        Route::get('delete-proImages/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteproductImages']);
+        Route::post('update-image-status', [App\Http\Controllers\Admin\ProductController::class, 'updateImageStatus']);
+        //banner
+        Route::get('/banners', [App\Http\Controllers\Admin\BannerController::class, 'banners']);
+        Route::post('/update-banner-status', [App\Http\Controllers\Admin\BannerController::class, 'updateBannerStatus']);
+        Route::match(['get','post'],'/add-edit-banner/{id?}', [App\Http\Controllers\Admin\BannerController::class, 'addEditBanner']);
+        Route::get('/delete-banner-image/{id}', [App\Http\Controllers\Admin\BannerController::class, 'deleteBannerImages']);
+        Route::get('/delete-banner/{id}', [App\Http\Controllers\Admin\BannerController::class, 'deleteBanner']);
 
 
+    }); 
+});  
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-use App\Category;
-
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+use App\Models\Category;
 
 Route::namespace('Front')->group(function(){
-  Route::get('/', 'IndexController@index');
-  // Route::get('/{url}', 'ProductController@listing');
-  //category url
-  $catUrls = Category::select('url')->where('status',1)->get()->pluck('url')->toArray();
-  //echo "<pre>"; print_r($catUrls); die;
-  foreach ($catUrls as $url) {
-    Route::get('/'.$url, 'ProductController@listing');
-  }
-  //cart page
-  Route::get('/cart','ProductController@cart');
-  //product details
-  Route::get('/{id}','ProductController@product');
-  //add to Cart
-  Route::post('add-to-cart','ProductController@addtocart');
-  //get product price
-  Route::post('/get-product-price','ProductController@getProductPrice');
+    
+    Route::get('/', [App\Http\Controllers\Front\IndexController::class, 'index']);
+    $catUrls = Category::select('url')->where('status',1)->get()->pluck('url')->toArray();
+    // echo "<pre>"; print_r($catUrls); die;
+    foreach ($catUrls as $url) {
+        Route::get('/'.$url, [App\Http\Controllers\Front\ProductController::class, 'listing']);
 
+    }
+    //login register 
+    Route::get('login-register', [App\Http\Controllers\Front\UserController::class, 'LoginRegister'])->name('login');
+    // Route::get('login-register',['as' =>'login', 'uses'=> [App\Http\Controllers\Front\UserController::class, 'LoginRegister']]);
+    //login user
+    Route::post('login', [App\Http\Controllers\Front\UserController::class, 'loginUser']);
+    //register user
+    Route::post('register', [App\Http\Controllers\Front\UserController::class, 'registerUser']);
+    //check email
+    Route::match(['get','post'],'check-email', [App\Http\Controllers\Front\UserController::class, 'checkEmail']);
+    //active email confarmation
+    Route::match(['get','post'],'/confirm/{code}', [App\Http\Controllers\Front\UserController::class, 'confirmAccount']);
+
+
+    Route::group(['middleware' => ['auth']], function () {
+
+        Route::match(['get','post'],'/forgot-password', [App\Http\Controllers\Front\UserController::class, 'UserforgotPassword']);
+        Route::match(['get','post'],'/account', [App\Http\Controllers\Front\UserController::class, 'Account']);
+        Route::post('check-user-pwd', [App\Http\Controllers\Front\UserController::class, 'checkUserPassword']);
+        Route::post('update-user-pwd', [App\Http\Controllers\Front\UserController::class, 'updateUserPassword']);
+    });
+
+
+     //register user
+     Route::get('logout', [App\Http\Controllers\Front\UserController::class, 'logoutUser']);
+    
+    //cart page
+    Route::get('/cart', [App\Http\Controllers\Front\ProductController::class, 'cart']);
+    //updaet cart item qty
+    Route::post('/update-cart-item-qty',[App\Http\Controllers\Front\ProductController::class, 'updateCartItemQty']);
+    //delete cart item
+    Route::post('/delete-cart-item',[App\Http\Controllers\Front\ProductController::class, 'deleteCartItem']);
+   //product details
+    Route::get('/{id}', [App\Http\Controllers\Front\ProductController::class, 'product']);
+    //add to Cart
+    Route::post('add-to-cart', [App\Http\Controllers\Front\ProductController::class, 'addtocart']);
+    //get product price
+    Route::post('/get-product-price', [App\Http\Controllers\Front\ProductController::class, 'getProductPrice']);
+
+
+
+ 
 });

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Product;
-
+use App\Models\Product;
 class IndexController extends Controller
 {
+  
     public function index(){
     	//Featured Products 
     	$featuredItemCount = Product::where('is_featured','Yes')->where('status',1)->count();

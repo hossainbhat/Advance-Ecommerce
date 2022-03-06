@@ -1,5 +1,7 @@
-<?php use App\Product; ?>
-@extends("layouts.front_layout.front_layout")
+<?php 
+use App\Models\Product; 
+?>
+@extends("layouts.front_layouts.front_layout")
 @section("content")
 
 <div class="span9">
@@ -10,19 +12,19 @@
   </ul>
   <div class="row">
     <div id="gallery" class="span3">
-      <?php $product_image_path = "images/products/large/".$productDetails['main_image']; ?>
+      <?php $product_image_path = "backEnd/images/products/large/".$productDetails['main_image']; ?>
 			@if(!empty($productDetails['main_image']) && file_exists($product_image_path))
         <a href="{{asset($product_image_path)}}" title="Blue Casual T-Shirt">
           <img src="{{asset($product_image_path)}}" style="width:100%" alt="Blue Casual T-Shirt"/>
       </a>
 			@else
-				<img src="{{asset('images/products/small/no-image.png')}}" alt="">
+				<img src="{{asset('backEnd/images/products/small/no-image.png')}}" alt="">
 			@endif
       <div id="differentview" class="moreOptopm carousel slide">
         <div class="carousel-inner">
           <div class="item active">
             @foreach($productDetails['product_image'] as $image)
-            <a href="{{asset('images/products/large/'.$image['image'])}}"> <img style="width:29%" src="{{asset('images/products/large/'.$image['image'])}}" alt=""/></a>
+            <a href="{{asset('backEnd/images/products/large/'.$image['image'])}}"> <img style="width:29%" src="{{asset('backEnd/images/products/large/'.$image['image'])}}" alt=""/></a>
             @endforeach
           </div>
         </div>
@@ -147,11 +149,11 @@
               @foreach($relatedProducts as $product)
                 <div class="row">
                   <div class="span2">
-                    <?php $product_image_path = "images/products/small/".$product['main_image']; ?>
+                    <?php $product_image_path = "backEnd/images/products/small/".$product['main_image']; ?>
                     @if(!empty($product['main_image']) && file_exists($product_image_path))
                     <img src="{{asset($product_image_path)}}" alt="">
                     @else
-                    <img src="{{asset('images/products/small/no-image.png')}}" alt="">
+                    <img src="{{asset('backEnd/images/products/small/no-image.png')}}" alt="">
                     @endif
                   </div>
                   <div class="span4">
@@ -188,11 +190,11 @@
                   <li class="span3">
                   <div class="thumbnail">
                     <a href="{{url($reproduct['id'])}}">
-                        <?php $product_image_path = "images/products/small/".$reproduct['main_image']; ?>
+                        <?php $product_image_path = "backEnd/images/products/small/".$reproduct['main_image']; ?>
                         @if(!empty($reproduct['main_image']) && file_exists($product_image_path))
                         <img src="{{asset($product_image_path)}}" alt="">
                         @else
-                        <img src="{{asset('images/products/small/no-image.png')}}" alt="">
+                        <img src="{{asset('backEnd/images/products/small/no-image.png')}}" alt="">
                         @endif
                     </a>
                     <div class="caption">

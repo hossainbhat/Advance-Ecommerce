@@ -1,99 +1,119 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Online Store BD | Log in</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{asset('css/admin_css/adminlte.min.css')}}">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--favicon-->
+	<link rel="icon" href="{{asset('backEnd/images/favicon-32x32.png')}}" type="image/png" />
+	<!--plugins-->
+	<link href="{{asset('backEnd/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />
+	<link href="{{asset('backEnd/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet" />
+	<link href="{{asset('backEnd/plugins/metismenu/css/metisMenu.min.css')}}" rel="stylesheet" />
+	<!-- loader-->
+	<link href="{{asset('backEnd/css/pace.min.css')}}" rel="stylesheet" />
+	<script src="{{asset('backEnd/js/pace.min.js')}}"></script>
+	<!-- Bootstrap CSS -->
+	<link href="{{asset('backEnd/css/bootstrap.min.css')}}" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
+	<link href="{{asset('backEnd/css/app.css')}}" rel="stylesheet">
+	<link href="{{asset('backEnd/css/icons.css')}}" rel="stylesheet">
+	<title>Rocker - Bootstrap 5 Admin Dashboard Template</title>
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="{{url('/admin')}}"><b>Admin</b>Panel</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
-      @if(Session::has('error_message'))
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{Session::get('error_message')}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      @endif
 
-      @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-      @endif
+<body class="">
+	<!--wrapper-->
+	<div class="wrapper">
+		<div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
+			<div class="container-fluid">
+				<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
+					<div class="col mx-auto">
+						<div class="mb-4 text-center">
+							<img src="{{asset('backEnd/images/logo-img.png')}}" width="180" alt="" />
+						</div>
+						<div class="card shadow-none">
+							<div class="card-body">
+								<div class="border p-4 rounded">
+									<div class="text-center">
+										<h3 class="">Sign in</h3>
+									</div>
+									<div class="form-body">
+										@if(Session::has('error_message'))
+										<div class="alert alert-danger alert-dismissible fade show" role="alert">
+											{{Session::get('error_message')}}
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										@endif
 
-      <form action="{{url('/admin')}}" method="post">
-        @csrf
-        <div class="input-group mb-3">
-          <input type="email" name="email" id="email" class="form-control" placeholder="Email">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-<!--           <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div> -->
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-          </div>
-          <!-- /.col -->
-        </div>
-      </form>
-
-
-    </div>
-    <!-- /.login-card-body -->
-  </div>
-</div>
-<!-- /.login-box -->
-
-<!-- jQuery -->
-<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
-<!-- Bootstrap 4 -->
-<script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{asset('js/admin_js/adminlte.min.js')}}"></script>
-
+										@if ($errors->any())
+											<div class="alert alert-danger">
+												<ul>
+													@foreach ($errors->all() as $error)
+														<li>{{ $error }}</li>
+													@endforeach
+												</ul>
+											</div>
+										@endif
+										<form class="row g-3" action="{{url('/admin')}}" method="post">
+										@csrf
+											<div class="col-12">
+												<label for="email" class="form-label">Email Address</label>
+												<input type="email" name="email" class="form-control" id="email" placeholder="Email Address">
+											</div>
+											<div class="col-12">
+												<label for="password" class="form-label">Enter Password</label>
+												<div class="input-group" id="show_hide_password">
+													<input type="password" name="password" class="form-control border-end-0" id="password" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-check form-switch">
+													<input class="form-check-input" name="remember" type="checkbox" id="flexSwitchCheckChecked" checked>
+													<label class="form-check-label" for="flexSwitchCheckChecked">Remember Me</label>
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="d-grid">
+													<button type="submit" class="btn btn-primary"><i class="bx bxs-lock-open"></i>Sign in</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+		</div>
+	</div>
+	<!--end wrapper-->
+	<!-- Bootstrap JS -->
+	<script src="{{asset('backEnd/js/bootstrap.bundle.min.js')}}"></script>
+	<!--plugins-->
+	<script src="{{asset('backEnd/js/jquery.min.js')}}"></script>
+	<script src="{{asset('backEnd/plugins/simplebar/js/simplebar.min.js')}}"></script>
+	<script src="{{asset('backEnd/plugins/metismenu/js/metisMenu.min.js')}}"></script>
+	<script src="{{asset('backEnd/plugins/perfect-scrollbar/js/perfect-scrollbar.js')}}"></script>
+	<!--Password show & hide js -->
+	<script>
+		$(document).ready(function () {
+			$("#show_hide_password a").on('click', function (event) {
+				event.preventDefault();
+				if ($('#show_hide_password input').attr("type") == "text") {
+					$('#show_hide_password input').attr('type', 'password');
+					$('#show_hide_password i').addClass("bx-hide");
+					$('#show_hide_password i').removeClass("bx-show");
+				} else if ($('#show_hide_password input').attr("type") == "password") {
+					$('#show_hide_password input').attr('type', 'text');
+					$('#show_hide_password i').removeClass("bx-hide");
+					$('#show_hide_password i').addClass("bx-show");
+				}
+			});
+		});
+	</script>
 </body>
 </html>

@@ -1,108 +1,73 @@
-  @extends("layouts.admin_layout.admin_layout")
-  @section("content")
- <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>{{ $name }}</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ $name }}</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
+@extends("layouts.admin_layouts.admin_layout")
+@section('title',$name)
+@section('content')
+<div class="page-wrapper">
+			<div class="page-content">
+				<!--breadcrumb-->
+				
+				<!--end breadcrumb-->
+				<div class="row">
+					<div class="col-xl-9 mx-auto">
+						<h6 class="mb-0 text-uppercase">{{$name}}</h6>                        
+						<a href="{{url('admin/brands')}}" style="float:right; margin-top:-30px;"><button class="btn btn-sm btn-success">Brand List <i class="lni lni-list"></i></button></a>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">{{ $name }}</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="card-body">
-              @if ($errors->any())
-                <div class="alert alert-danger" style="margin-top: 10px;">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-              @endif
-              @if(Session::has('success_message'))
-              <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                {{Session::get('success_message')}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              @endif
-          	<form name="bannerForm" id="bannerForm" @if(empty($bannerdata['id'])) action="{{url('admin/add-edit-banner')}}" @else   action="{{url('admin/add-edit-banner/'.$bannerdata['id'] )}}" @endif method="post" enctype="multipart/form-data">
-          		@csrf
-	            <div class="row">
-	              <div class="col-md-6">
-	              	<div class="form-group">
-	                    <label for="link">link</label>
-	                    <input type="text" name="link" class="form-control" id="link" placeholder="Enter banner link" @if(!empty($bannerdata['link'])) value="{{$bannerdata['link']}}" @else value="{{ old('link')}}" @endif>
-	                 </div>
-
-	                 <div class="form-group">
-	                    <label for="title">Title</label>
-	                    <input type="text" name="title" class="form-control" id="title" placeholder="Enter banner title"  @if(!empty($bannerdata['title'])) value="{{$bannerdata['title']}}" @else value="{{ old('title')}}" @endif>
-	                 </div>
-	                 <div class="form-group">
-	                    <label for="alt">Alt</label>
-	                    <input type="text" name="alt" class="form-control" id="alt" placeholder="Enter banner alt"  @if(!empty($bannerdata['alt'])) value="{{$bannerdata['alt']}}" @else value="{{ old('alt')}}" @endif>
-	                 </div>
-
-	                <div class="form-group">
-	                    <label for="image">banner Image</label><br>
-                      <small>Image size is 1170 * 480</small>
-	                    <div class="input-group">
-	                      <div class="custom-file">
-	                        <input type="file" name="image" class="custom-file-input" id="image">
-	                        <label class="custom-file-label" for="image">Choose file</label>
-	                      </div>
-	                      <div class="input-group-append">
-	                        <span class="input-group-text" id="">Upload</span>
-	                      </div>
-	                    </div>
-	                    @if(!empty($bannerdata['image']))
-	                    	<div style="height: 90px;">
-	                    		<img style="width: 80px; margin-top: 5px;" src="{{asset('images/banners/'.$bannerdata['image'])}}" >
-	                    		&nbsp;
-	                    		<a class="confirmDelete" record="banner-image" recoedid="{{$bannerdata['id']}}" href="javascript:void('0')">Delete</a>
-	                    	</div>
-	                    @endif
-	                  </div>
-
-	              </div>
-
-	              </div>
-	              <div class="card-footer">
-	                  <button type="submit" class="btn btn-primary">Submit</button>
-	              </div>
-	              <!-- /.col -->
-	            </div>
-            </form>
-            <!-- /.row -->
-          </div>
-          <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-
-  @endsection
+						<hr>
+						<div class="card">
+							<div class="card-body">
+								<div class="p-4 border rounded">
+										@if(Session::has('error_message'))
+											<div class="alert alert-danger border-0 bg-success alert-dismissible fade show">
+												<div class="text-white">{{Session::get('error_message')}}</div>
+												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+											</div>
+										@endif
+										@if ($errors->any())
+											<div class="alert alert-danger">
+												<ul>
+													@foreach ($errors->all() as $error)
+														<li>{{ $error }}</li>
+													@endforeach
+												</ul>
+											</div>
+										@endif
+									<form class="row g-3 needs-validation" @if(empty($bannerdata['id'])) action="{{url('admin/add-edit-banner')}}" @else   action="{{url('admin/add-edit-banner/'.$bannerdata['id'] )}}" @endif method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    
+										<div class="col-md-9">
+											<label for="link" class="form-label">link</label>
+											<input type="text" name="link" class="form-control" id="link" placeholder="Enter link" @if(!empty($bannerdata['link'])) value="{{$bannerdata['link']}}" @else value="{{ old('link')}}" @endif>
+										</div>
+                                        <div class="col-md-9">
+											<label for="title" class="form-label">title</label>
+											<input type="text" name="title" class="form-control" id="title" placeholder="Enter title" @if(!empty($bannerdata['title'])) value="{{$bannerdata['title']}}" @else value="{{ old('title')}}" @endif>
+										</div>
+                                        <div class="col-md-9">
+											<label for="alt" class="form-label">alt</label>
+											<input type="text" name="alt" class="form-control" id="alt" placeholder="Enter alt" @if(!empty($bannerdata['alt'])) value="{{$bannerdata['alt']}}" @else value="{{ old('alt')}}" @endif>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm-9 text-secondary">
+                                                <label for="formFile" class="form-label">Banner Image</label>
+                                                <input class="form-control" name="image" type="file" id="formFile">
+											</div>
+                                            @if(!empty($bannerdata['image']))
+                                            <div style="height: 90px;">
+                                                <img style="width: 80px; margin-top: 5px;" src="{{asset('backEnd/images/banners/'.$bannerdata['image'])}}" >
+                                                &nbsp;
+	                    		                <a class="confirmDelete" record="banner-image" recoedid="{{$bannerdata['id']}}" href="javascript:void('0')">Delete</a>
+                                            </div>
+                                       		 @endif
+										</div>
+										<div class="col-12">
+											<button class="btn btn-primary" type="submit">{{$name}}</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+		</div>	
+@endsection

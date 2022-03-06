@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Banner;
+use App\Models\Banner;
 use Session;
 use Image;
-
 class BannerController extends Controller
 {
     public function banners(){
@@ -16,21 +15,6 @@ class BannerController extends Controller
     	// dd($banners); die;
     	return view('admin.banner.banners')->with(compact('banners'));
     }
-
-    public function updateBannerStatus(Request $request){
-    	if ($request->ajax()) {
-    		$data = $request->all();
-    		// echo "<pre>"; print_r($data); die;
-    		if ($data['status']=="Active") {
-    			$status = 0;
-    		}else{
-    			$status = 1;
-    		}
-    		Banner::where('id',$data['banner_id'])->update(['status'=>$status]);
-    		return response()->json(['status'=>$status,'banner_id'=>$data['banner_id']]);
-    	}
-    }
-
 
     public function addEditBanner(Request $request, $id=null){
         if ($id=="") {
@@ -66,7 +50,7 @@ class BannerController extends Controller
 
                     $extention = $image_temp->getClientOriginalExtension();
                     $imageName = rand(111,99999).'.'.$extention;
-                    $imagePath = 'images/banners/'.$imageName;
+                    $imagePath = 'backend/images/banners/'.$imageName;
                     Image::make($image_temp)->save($imagePath);
                     $banner->image = $imageName;
                }
@@ -89,10 +73,23 @@ class BannerController extends Controller
         return view('admin.banner.add_edit_banner')->with(compact('name','banners','bannerdata'));
     }
 
+    public function updateBannerStatus(Request $request){
+    	if ($request->ajax()) {
+    		$data = $request->all();
+    		// echo "<pre>"; print_r($data); die;
+    		if ($data['status']=="Active") {
+    			$status = 0;
+    		}else{
+    			$status = 1;
+    		}
+    		Banner::where('id',$data['banner_id'])->update(['status'=>$status]);
+    		return response()->json(['status'=>$status,'banner_id'=>$data['banner_id']]);
+    	}
+    }
     public function deleteBanner($id=null){
         $bannerImage = Banner::select('image')->where('id',$id)->first();
 
-        $banner_image_path = "images/banners/";
+        $banner_image_path = "backEnd/images/banners/";
         if (file_exists($banner_image_path.$bannerImage->image)) {
             unlink($banner_image_path.$bannerImage->image);
         }
@@ -105,7 +102,7 @@ class BannerController extends Controller
     public function deleteBannerImages($id=null){
         $bannerImage = Banner::select('image')->where('id',$id)->first();
 
-        $banner_image_path = "images/banners/";
+        $banner_image_path = "backEnd/images/banners/";
         if (file_exists($banner_image_path.$bannerImage->image)) {
             unlink($banner_image_path.$bannerImage->image);
         }

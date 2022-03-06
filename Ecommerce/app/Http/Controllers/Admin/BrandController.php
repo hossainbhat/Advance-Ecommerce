@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Brand;
+use App\Models\Brand;
 use Session;
 class BrandController extends Controller
 {
@@ -32,12 +32,12 @@ class BrandController extends Controller
 
     public function addEditBrand(Request $request, $id=null){
 	        if ($id=="") {
-	            $title ="Add Brand";
+	            $name ="Add Brand";
 	            $brand = new Brand;
 	            $branddata = array();
 	            $message ="Brand Add Successfully!";
 	        }else{
-	            $title ="Edit Brand";
+	            $name ="Edit Brand";
 	            $branddata = Brand::where('id',$id)->first();
 	            // $getCategories = json_decode(json_encode($getCategories),true);
 	            // echo "<pre>"; print_r($getCategories); die;
@@ -64,7 +64,7 @@ class BrandController extends Controller
             return redirect("admin/brands");
         }
         $brands = Brand::get();
-        return view('admin.brand.add_edit_brand')->with(compact('title','brands','branddata'));
+        return view('admin.brand.add_edit_brand')->with(compact('name','brands','branddata'));
     }
 
     public function deleteBrand($id=null){

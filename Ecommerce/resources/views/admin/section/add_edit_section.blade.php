@@ -1,77 +1,54 @@
-  @extends("layouts.admin_layout.admin_layout")
-  @section('title','Add/Edit Section')
-  @section("content")
- <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>{{ $title }}</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ $title }}</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
+@extends("layouts.admin_layouts.admin_layout")
+@section('title',$name)
+@section('content')
+<div class="page-wrapper">
+			<div class="page-content">
+				<!--breadcrumb-->
+				
+				<!--end breadcrumb-->
+				<div class="row">
+					<div class="col-xl-9 mx-auto">
+						<h6 class="mb-0 text-uppercase">{{$name}}</h6>                        
+						<a href="{{url('admin/sections')}}" style="float:right; margin-top:-30px;"><button class="btn btn-sm btn-success">Section List <i class="lni lni-list"></i></button></a>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">{{ $title }}</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="card-body">
-              @if ($errors->any())
-                <div class="alert alert-danger" style="margin-top: 10px;">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-              @endif
-              @if(Session::has('success_message'))
-              <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                {{Session::get('success_message')}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              @endif
-          	<form name="sectionForm" id="sectionForm" @if(empty($sectiondata['id'])) action="{{url('admin/add-edit-section')}}" @else   action="{{url('admin/add-edit-section/'.$sectiondata['id'] )}}" @endif method="post">
-          		@csrf
-	            <div class="row">
-	              <div class="col-md-6">
-	              	<div class="form-group">
-	                    <label for="name">Section Name</label>
-	                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter Section Name" @if(!empty($sectiondata['name'])) value="{{$sectiondata['name']}}" @else value="{{ old('name')}}" @endif>
-	                 </div>
-	                 <div class="card-footer">
-	                  <button type="submit" class="btn btn-primary">Submit</button>
-	              </div>
-	              </div>
-
-	              <!-- /.col -->
-	            </div>
-            </form>
-            <!-- /.row -->
-          </div>
-          <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-
-  @endsection
+						<hr>
+						<div class="card">
+							<div class="card-body">
+								<div class="p-4 border rounded">
+										@if(Session::has('error_message'))
+											<div class="alert alert-danger border-0 bg-success alert-dismissible fade show">
+												<div class="text-white">{{Session::get('error_message')}}</div>
+												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+											</div>
+										@endif
+										@if ($errors->any())
+											<div class="alert alert-danger">
+												<ul>
+													@foreach ($errors->all() as $error)
+														<li>{{ $error }}</li>
+													@endforeach
+												</ul>
+											</div>
+										@endif
+									<form class="row g-3 needs-validation" @if(empty($sectiondata['id'])) action="{{url('admin/add-edit-section')}}" @else   action="{{url('admin/add-edit-section/'.$sectiondata['id'] )}}" @endif method="post">
+                                    @csrf
+                                    
+										<div class="col-md-9">
+											<label for="name" class="form-label">name</label>
+											<input type="text" name="name" class="form-control" id="name" placeholder="Enter name" @if(!empty($sectiondata['name'])) value="{{$sectiondata['name']}}" @else value="{{ old('name')}}" @endif>
+										</div>
+                                       
+										
+										<div class="col-12">
+											<button class="btn btn-primary" type="submit">{{$name}}</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+		</div>	
+@endsection

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Category;
-use App\Section;
+use App\Models\Category;
+use App\Models\Section;
 use Session;
 use Image;
+
 class CategoryController extends Controller
 {
     public function categories(){
@@ -18,30 +19,16 @@ class CategoryController extends Controller
     	return view('admin.category.categories')->with(compact('categories'));
     }
 
-
-    public function updateCategoryStatus(Request $request){
-    	if ($request->ajax()) {
-    		$data = $request->all();
-    		// echo "<pre>"; print_r($data); die;
-    		if ($data['status']=="Active") {
-    			$status = 0;
-    		}else{
-    			$status = 1;
-    		}
-    		Category::where('id',$data['category_id'])->update(['status'=>$status]);
-    		return response()->json(['status'=>$status,'category_id'=>$data['category_id']]);
-    	}
-    }
-
+    
     public function addEditCategory(Request $request, $id=null){
         if ($id=="") {
-            $title ="Add Category";
+            $name ="Add Category";
             $category = new Category;
             $categorydata = array();
             $getCategories = array();
             $message ="Category Add Successfully!";
         }else{
-            $title ="Edit Category";
+            $name ="Edit Category";
             $categorydata = Category::where('id',$id)->first();
             $getCategories = Category::with('subcategories')->where(['parent_id'=>0, 'section_id'=>$categorydata['section_id']])->get();
             // $getCategories = json_decode(json_encode($getCategories),true);
@@ -74,7 +61,7 @@ class CategoryController extends Controller
 
                     $extention = $image_temp->getClientOriginalExtension();
                     $imageName = rand(111,99999).'.'.$extention;
-                    $imagePath = 'images/category_img/'.$imageName;
+                    $imagePath = 'backEnd/images/category_image/'.$imageName;
                     Image::make($image_temp)->save($imagePath);
                     $category->image = $imageName;
                }
@@ -106,9 +93,8 @@ class CategoryController extends Controller
             return redirect("admin/categories");
         }
         $sections = Section::get();
-        return view('admin.category.add_edit_category')->with(compact('title','sections','categorydata','getCategories'));
+        return view('admin.category.add_edit_category')->with(compact('name','sections','categorydata','getCategories'));
     }
-
 
     public function appendCategoriesLevel(Request $request){
         if ($request->ajax()) {
@@ -121,10 +107,23 @@ class CategoryController extends Controller
         }
     }
 
+    public function updateCategoryStatus(Request $request){
+    	if ($request->ajax()) {
+    		$data = $request->all();
+    		// echo "<pre>"; print_r($data); die;
+    		if ($data['status']=="Active") {
+    			$status = 0;
+    		}else{
+    			$status = 1;
+    		}
+    		Category::where('id',$data['category_id'])->update(['status'=>$status]);
+    		return response()->json(['status'=>$status,'category_id'=>$data['category_id']]);
+    	}
+    }
     public function deleteCategoryImage($id=null){
         $categoryImage = Category::select('image')->where('id',$id)->first();
 
-        $category_image_path = "images/category_img/";
+        $category_image_path = "backEnd/images/category_image/";
         if (file_exists($category_image_path.$categoryImage->image)) {
             unlink($category_image_path.$categoryImage->image);
         }
@@ -133,12 +132,11 @@ class CategoryController extends Controller
 
         return redirect()->back()->with("success_message","Category Image has been deleted Successfully!");
     }
-
     public function deleteCategory($id=null){
         $categoryImage = Category::select('image')->where('id',$id)->first();
 
         if(!empty($categoryImage['image'])){
-        $category_image_path = "images/category_img/";
+        $category_image_path = "backEnd/images/category_image/";
         if (file_exists($category_image_path.$categoryImage->image)) {
             unlink($category_image_path.$categoryImage->image);
         }
@@ -149,4 +147,5 @@ class CategoryController extends Controller
 
         return redirect()->back()->with("success_message","Category has been deleted Successfully!");
     }
+
 }

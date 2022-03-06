@@ -1,6 +1,8 @@
-<?php use App\Banner;
+
+<?php 
+use App\Models\Banner;
   $getBanners = Banner::getBanners();
-  //echo "<pre>"; print_r($getBanners); die;
+//   echo "<pre>"; print_r($getBanners); die;
 
  ?>
 @if(isset($page_name) && $page_name == "index")
@@ -10,7 +12,7 @@
       @foreach ($getBanners as $key => $banner)
 			<div class="item @if($key==0) active @endif">
 				<div class="container">
-					<a @if(!empty($banner['link'])) href="{{url($banner['link'])}}" @else href="javascript:void(0)" @endif><img style="width:100%" src="{{asset('images/banners/'.$banner['image'])}}" alt="{{$banner['alt']}}" title="{{$banner['title']}}"/></a>
+					<a @if(!empty($banner['link'])) href="{{url($banner['link'])}}" @else href="javascript:void(0)" @endif><img style="width:100%;" src="{{asset('backEnd/images/banners/'.$banner['image'])}}" alt="{{$banner['alt']}}" title="{{$banner['title']}}"/></a>
 				</div>
 			</div>
       @endforeach

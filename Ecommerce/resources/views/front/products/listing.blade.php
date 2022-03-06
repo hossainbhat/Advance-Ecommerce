@@ -1,4 +1,4 @@
-@extends("layouts.front_layout.front_layout")
+@extends("layouts.front_layouts.front_layout")
 @section("content")
 		<!-- Sidebar end=============================================== -->
 		<div class="span9">
