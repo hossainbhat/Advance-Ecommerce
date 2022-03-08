@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 06, 2022 at 04:02 AM
+-- Generation Time: Mar 08, 2022 at 04:52 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -111,13 +111,20 @@ INSERT INTO `brands` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `carts` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `session_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
   `product_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `size` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `quantity` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`id`, `session_id`, `user_id`, `product_id`, `size`, `quantity`, `created_at`, `updated_at`) VALUES
+(28, 'bh5BEb14UY9q0mhhS58EetBuglvvOB0ejDwsDUI7', 6, '8', 'Medium', 1, '2022-03-05 22:19:26', '2022-03-05 23:07:19');
 
 -- --------------------------------------------------------
 
@@ -127,8 +134,8 @@ CREATE TABLE `carts` (
 
 CREATE TABLE `categories` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `parent_id` int(11) NOT NULL,
-  `section_id` int(11) NOT NULL,
+  `parent_id` int(11) UNSIGNED NOT NULL,
+  `section_id` int(11) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `discount` double(8,2) DEFAULT NULL,
@@ -488,9 +495,9 @@ CREATE TABLE `password_resets` (
 
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `section_id` int(11) NOT NULL,
-  `brand_id` int(11) NOT NULL,
+  `category_id` int(11) UNSIGNED NOT NULL,
+  `section_id` int(11) UNSIGNED NOT NULL,
+  `brand_id` int(11) UNSIGNED NOT NULL,
   `product_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_code` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_color` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -536,7 +543,7 @@ INSERT INTO `products` (`id`, `category_id`, `section_id`, `brand_id`, `product_
 
 CREATE TABLE `products_attributes` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
   `size` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` double(8,2) NOT NULL,
   `stock` int(11) NOT NULL,
@@ -557,7 +564,7 @@ INSERT INTO `products_attributes` (`id`, `product_id`, `size`, `price`, `stock`,
 (4, 3, 'Small', 350.00, 15, 'ORG202-S', 1, '2020-07-07 11:03:40', '2020-07-07 13:06:25'),
 (5, 3, 'Medium', 350.00, 15, 'ORG202-M', 1, '2020-07-07 11:03:40', '2020-07-07 13:06:25'),
 (6, 3, 'Large', 350.00, 10, 'ORG202-L', 1, '2020-07-07 11:03:40', '2020-07-07 13:06:25'),
-(7, 4, 'Small', 350.00, 0, 'BLK202-S', 1, '2020-07-07 11:05:24', '2020-10-27 18:58:56'),
+(7, 4, 'Small', 350.00, 0, 'BLK202-S', 1, '2020-07-07 11:05:24', '2022-03-07 21:43:46'),
 (8, 4, 'Medium', 360.00, 15, 'BLK202-M', 1, '2020-07-07 11:05:24', '2020-10-27 18:58:56'),
 (9, 4, 'Large', 370.00, 10, 'BLK202-L', 1, '2020-07-07 11:05:24', '2020-10-27 18:58:56'),
 (10, 5, 'Small', 350.00, 10, 'BLU202-S', 1, '2020-07-07 11:06:41', '2020-07-07 11:06:41'),
@@ -584,7 +591,7 @@ INSERT INTO `products_attributes` (`id`, `product_id`, `size`, `price`, `stock`,
 
 CREATE TABLE `products_images` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
   `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -655,7 +662,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `mobile`, `address`, `city`, `state`
 (1, 'admin', 'admin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '$2y$10$5pIIXRQ.Jpco.Hla1pyn3.kRy4ITO1mI/ZUJrAmuSBs72QulOtGu2', NULL, '2020-08-12 19:39:12', '2020-08-12 19:39:12'),
 (3, 'MD Hossain Bhat', 'hossainbhatcse@gmail.com', '1838322523', NULL, NULL, NULL, NULL, NULL, 0, NULL, '$2y$10$zKzFfYBDuqnDywRUT0OmUOr9UBUkrImxfADdLnkv24r.p7..1VkLe', NULL, '2022-03-05 02:40:06', '2022-03-05 02:40:06'),
 (4, 'MD Hossain Bhat', 'demo_user@gmail.com', '1838322523', NULL, NULL, NULL, NULL, NULL, 0, NULL, '$2y$10$Kx8XeLr21Io0/w3huUpOjOaNnB1tGZBKwjRWDGFwHAsSQCgr.t0zS', NULL, '2022-03-05 02:42:27', '2022-03-05 02:42:27'),
-(5, 'kamal khan', 'kamal8080@yopmail.com', '01838322523', 'Nikunja-2, Khilkhet, Dhaka', 'Dhaka', 'nikuja', 'Bangladesh', 1129, 1, NULL, '$2y$10$SB7Z/E2YJsb6xOuSF1Nmw.U3hy7jxwpMs5NlG7HNpazfrF1fxX/VC', NULL, '2022-03-05 02:47:23', '2022-03-05 05:09:15');
+(5, 'kamal khan', 'kamal8080@yopmail.com', '01838322523', 'Nikunja-2, Khilkhet, Dhaka', 'Dhaka', 'nikuja', 'Bangladesh', 1129, 1, NULL, '$2y$10$SB7Z/E2YJsb6xOuSF1Nmw.U3hy7jxwpMs5NlG7HNpazfrF1fxX/VC', NULL, '2022-03-05 02:47:23', '2022-03-05 05:09:15'),
+(6, 'roja', 'roja100@yopmail.com', '01838322523', NULL, NULL, NULL, NULL, NULL, 1, NULL, '$2y$10$p0P9pl1biF1G.Hrh..dw/uMPsh8HgbHDuDlsWWZdNndA9fyUEVvV2', NULL, '2022-03-05 22:21:27', '2022-03-05 22:21:49');
 
 --
 -- Indexes for dumped tables
@@ -773,7 +781,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -827,7 +835,7 @@ ALTER TABLE `sections`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

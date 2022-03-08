@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Banner;
-use Session;
-use Image;
+use Illuminate\Support\Facades\Session;
+use Intervention\Image\Facades\Image;
+// use Session;
+// use Image;
 class BannerController extends Controller
 {
     public function banners(){

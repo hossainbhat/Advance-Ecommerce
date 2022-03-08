@@ -10,8 +10,10 @@ use App\Models\Product;
 use App\Models\Section;
 use App\Models\Brand;
 use App\Models\ProductsImage;
-use Session;
-use Image;
+use Illuminate\Support\Facades\Session;
+use Intervention\Image\Facades\Image;
+// use Session;
+// use Image;
 class ProductController extends Controller
 {
     public function products(){

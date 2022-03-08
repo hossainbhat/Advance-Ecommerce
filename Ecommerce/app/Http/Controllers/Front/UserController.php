@@ -10,8 +10,8 @@ use App\Models\Country;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\Sms;
-use Auth;
-use Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {

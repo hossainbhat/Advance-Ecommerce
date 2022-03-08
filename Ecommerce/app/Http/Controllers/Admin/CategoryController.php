@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Section;
-use Session;
-use Image;
+use Illuminate\Support\Facades\Session;
+use Intervention\Image\Facades\Image;
+// use Session;
+// use Image;
 
 class CategoryController extends Controller
 {

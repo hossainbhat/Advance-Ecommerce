@@ -2,7 +2,8 @@
 
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Illuminate\Support\Facades\Session;
+// use Session;
 
 function totalCartItems(){
     if(Auth::check()){

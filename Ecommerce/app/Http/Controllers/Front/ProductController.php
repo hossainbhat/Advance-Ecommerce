@@ -10,8 +10,8 @@ use App\Models\ProductsAttribute;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Cart;
-use Session;
-use Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -189,8 +189,10 @@ class ProductController extends Controller
           // echo $availavleStock['stock']; die;
           if($data['qty']>$availavleStock['stock']){
             $userCartItems = Cart::userCartItems();
+         
             return response()->json([
               'status'=>false,
+              
               'message'=>'stock is not avalable!',
               'view'=>(String)View::make('front.products.cart_items')->with(compact('userCartItems'))
             ]);
@@ -199,6 +201,7 @@ class ProductController extends Controller
           $availavleSize = ProductsAttribute::where(['product_id'=>$cartDetails['product_id'],'size'=>$cartDetails['size'],'status'=>1])->count();
           if($availavleSize==0){
             $userCartItems = Cart::userCartItems();
+            
             return response()->json([
               'status'=>false,
               'message'=>'size is not avalable!',
@@ -207,8 +210,10 @@ class ProductController extends Controller
           }
           Cart::where('id',$data['cartid'])->update(['quantity'=>$data['qty']]);
           $userCartItems = Cart::userCartItems();
+          $totalCartItems = totalCartItems();
           return response()->json([
             'status'=>true,
+            'totalCartItems'=>$totalCartItems,
             'view'=>(String)View::make('front.products.cart_items')->with(compact('userCartItems'))
           ]);
 
@@ -221,7 +226,9 @@ class ProductController extends Controller
           // echo "<pre>"; print_r($data);die;
           Cart::where('id',$data['cartid'])->delete();
           $userCartItems = Cart::userCartItems();
+          $totalCartItems = totalCartItems();
             return response()->json([
+              'totalCartItems'=>$totalCartItems,
               'view'=>(String)View::make('front.products.cart_items')->with(compact('userCartItems'))
             ]);
           }

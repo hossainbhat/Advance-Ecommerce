@@ -186,9 +186,12 @@ $.ajax({
         type:"post",
         success:function(resp){
             // alert(resp);
+            
             if(resp.status==false){
                 alert(resp.message);
             }
+            
+            $(".totalCartItems").html(resp.totalCartItems);
             $('#AppendCartItems').html(resp.view);
         },error:function(){
             alert("Error");
@@ -207,7 +210,7 @@ $(document).on('click','.btnItemDelete',function(){
             url:"/delete-cart-item",
             type:"post",
             success:function(resp){
-               
+                $(".totalCartItems").html(resp.totalCartItems);
                 $('#AppendCartItems').html(resp.view);
             },error:function(){
                 alert("Error");

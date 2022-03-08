@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
-use Auth;
-use Session;
-use Image;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+// use Image;
+use Intervention\Image\Facades\Image;
 
 class AdminController extends Controller
 {
