@@ -25,10 +25,18 @@ use App\Models\Product;
                   </div>
                 </td>
                 <td>৳.{{ $attrPrice['product_price'] }}</td>
-                <td>৳.{{ $attrPrice['discount'] }}</td>
-                <td>৳.{{ $attrPrice['product_price'] * $item['quantity'] - $attrPrice['discount']}}</td>
+                <?php
+                  $totaldiscount = round($attrPrice['discount']*$item['quantity']);
+                  
+                  
+                  $subtotal = round($attrPrice['product_price'] * $item['quantity'] - $totaldiscount);
+                  // $subtotalall = $subtotal - $totaldiscount;
+                ?>
+                <td>৳.{{ ($totaldiscount) }}</td>
+                <td>৳.{{ ($subtotal)}}</td>
               </tr>
-              <?php $total_price = $total_price + ( $attrPrice['final_price'] * $item['quantity']); ?>
+              <?php $total_price = $total_price + ( $attrPrice['final_price'] * $item['quantity']); 
+              ?>
               @endforeach
               <tr>
                 <td colspan="5" style="text-align:right">Total Price:	</td>

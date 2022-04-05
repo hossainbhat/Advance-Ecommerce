@@ -58,6 +58,12 @@ Route::prefix('/admin')->namespace('Admin')->group(function(){
         Route::match(['get','post'],'/add-edit-banner/{id?}', [App\Http\Controllers\Admin\BannerController::class, 'addEditBanner']);
         Route::get('/delete-banner-image/{id}', [App\Http\Controllers\Admin\BannerController::class, 'deleteBannerImages']);
         Route::get('/delete-banner/{id}', [App\Http\Controllers\Admin\BannerController::class, 'deleteBanner']);
+        //coupon
+        Route::get('/coupons', [App\Http\Controllers\Admin\CouponController::class, 'coupons']);
+        Route::post('/update-coupon-status', [App\Http\Controllers\Admin\CouponController::class, 'updateCouponStatus']);
+        Route::match(['get','post'],'/add-edit-coupon/{id?}', [App\Http\Controllers\Admin\CouponController::class, 'addEditCoupon']);
+        Route::get('/delete-coupon/{id}', [App\Http\Controllers\Admin\CouponController::class, 'deleteCoupon']);
+
 
 
     }); 

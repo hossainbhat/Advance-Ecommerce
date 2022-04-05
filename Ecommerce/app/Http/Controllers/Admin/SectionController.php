@@ -70,7 +70,6 @@ class SectionController extends Controller
 	public function deleteSection($id=null){
 
         Section::where('id',$id)->delete();
-
         return redirect()->back()->with("success_message","Section has been deleted Successfully!");
     }
 	
