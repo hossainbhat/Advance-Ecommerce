@@ -95,13 +95,15 @@ Route::namespace('Front')->group(function(){
     //active email confarmation
     Route::match(['get','post'],'/confirm/{code}', [App\Http\Controllers\Front\UserController::class, 'confirmAccount']);
 
+    Route::match(['get','post'],'/forgot-password', [App\Http\Controllers\Front\UserController::class, 'UserforgotPassword']);
 
     Route::group(['middleware' => ['auth']], function () {
 
-        Route::match(['get','post'],'/forgot-password', [App\Http\Controllers\Front\UserController::class, 'UserforgotPassword']);
         Route::match(['get','post'],'/account', [App\Http\Controllers\Front\UserController::class, 'Account']);
         Route::post('check-user-pwd', [App\Http\Controllers\Front\UserController::class, 'checkUserPassword']);
         Route::post('update-user-pwd', [App\Http\Controllers\Front\UserController::class, 'updateUserPassword']);
+        //apply coupon
+        Route::post('/apply-coupon', [App\Http\Controllers\Front\ProductController::class, 'applyCoupon']);
     });
 
 

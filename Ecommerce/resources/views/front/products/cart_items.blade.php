@@ -43,7 +43,7 @@ use App\Models\Product;
                 <td> ৳.{{$total_price}}</td>
             </tr>
             <tr>
-              <td colspan="5" style="text-align:right">Discount:	</td>
+              <td colspan="5" style="text-align:right">Coupon Discount:	</td>
               <td> ৳.3000.00</td>
           </tr>
           <tr>
@@ -57,14 +57,15 @@ use App\Models\Product;
   <tbody>
       <tr>
         <td>
-        <form class="form-horizontal">
-        <div class="control-group">
-        <label class="control-label"><strong> VOUCHERS CODE: </strong> </label>
-        <div class="controls">
-        <input type="text" class="input-medium" placeholder="CODE">
-        <button type="submit" class="btn"> ADD </button>
-        </div>
-        </div>
+        <form id="ApplyCoupon" method="post" action="javascript:void(0);" class="form-horizontal" @if(Auth::check()) user=1 @endif >
+          @csrf 
+          <div class="control-group">
+            <label class="control-label"><strong> COUPON CODE: </strong> </label>
+            <div class="controls">
+              <input type="text" name="code" id="code" class="input-medium" placeholder="Enter Coupon Code" required="">
+              <button type="submit" class="btn"> Apply </button>
+            </div>
+          </div>
         </form>
       </td>
     </tr>

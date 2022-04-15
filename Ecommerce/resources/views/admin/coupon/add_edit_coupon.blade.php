@@ -34,7 +34,7 @@
 												</ul>
 											</div>
 										@endif
-									<form class="row g-3 needs-validation" @if(empty($coupondata['id'])) action="{{url('admin/add-edit-coupon')}}" @else   action="{{url('admin/add-edit-coupon/'.$coupondata['id'] )}}" @endif method="post">
+									<form class="row g-3 needs-validation" @if(empty($coupon['id'])) action="{{url('admin/add-edit-coupon')}}" @else   action="{{url('admin/add-edit-coupon/'.$coupon['id'] )}}" @endif method="post">
                                     @csrf
                                     
                                         @if(empty($coupon['coupon_code']))

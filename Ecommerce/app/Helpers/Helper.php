@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cart;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 // use Session;
@@ -16,6 +17,8 @@ function totalCartItems(){
     }
     return $totalCartItems;
 }
+
+
 
 
 

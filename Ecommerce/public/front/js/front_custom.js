@@ -331,6 +331,32 @@ $(document).on('click','.btnItemDelete',function(){
 		});
 	});
 
-
+//apply coupon
+    $("#ApplyCoupon").submit(function(){
+        // alert('test');
+        var user = $(this).attr("user");
+        if(user==1){
+            //do nothing
+        }else{
+            alert("Please Login to Apply!");
+            return false;
+        }
+        var code = $("#code").val();
+        // alert(code);
+        $.ajax({
+           type:"post",
+           data:{code:code},
+           url:'/apply-coupon',
+           success:function(resp){
+            if(resp.message != ""){
+                alert(resp.message);
+            }
+            $(".totalCartItems").html(resp.totalCartItems);
+            $('#AppendCartItems').html(resp.view);
+           },error:function(){
+               alert("Error");
+           }
+        });
+    });
 
 });
