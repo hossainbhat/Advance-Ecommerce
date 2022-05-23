@@ -104,6 +104,8 @@ Route::namespace('Front')->group(function(){
         Route::post('update-user-pwd', [App\Http\Controllers\Front\UserController::class, 'updateUserPassword']);
         //apply coupon
         Route::post('/apply-coupon', [App\Http\Controllers\Front\ProductController::class, 'applyCoupon']);
+        Route::match(['get','post'],'/checkout', [App\Http\Controllers\Front\UserController::class, 'checkout']);
+
     });
 
 
@@ -112,6 +114,7 @@ Route::namespace('Front')->group(function(){
     
     //cart page
     Route::get('/cart', [App\Http\Controllers\Front\ProductController::class, 'cart']);
+  
     //updaet cart item qty
     Route::post('/update-cart-item-qty',[App\Http\Controllers\Front\ProductController::class, 'updateCartItemQty']);
     //delete cart item

@@ -353,6 +353,16 @@ $(document).on('click','.btnItemDelete',function(){
             }
             $(".totalCartItems").html(resp.totalCartItems);
             $('#AppendCartItems').html(resp.view);
+            if(resp.couponAmount >=0){
+                $(".couponAmount").text("৳. "+resp.couponAmount);
+            }else{
+                $(".couponAmount").text("৳.0");
+            }
+            if(resp.grand_total>=0){
+                $(".grand_total").text("৳. "+resp.grand_total);
+            }
+            
+           
            },error:function(){
                alert("Error");
            }
