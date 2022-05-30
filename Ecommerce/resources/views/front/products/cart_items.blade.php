@@ -45,8 +45,8 @@ use App\Models\Product;
             <tr>
               <td colspan="5" style="text-align:right">Coupon Discount:	</td>
               <td class="couponAmount"> 
-                @if(Session::has('CouponAmount'))
-                   ৳. {{Session::get('CouponAmount')}}
+                @if(Session::has('couponAmount'))
+                   ৳. {{Session::get('couponAmount')}}
                 @else 
                   ৳. 0
                 @endif 
@@ -54,7 +54,7 @@ use App\Models\Product;
           </tr>
           <tr>
               <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (৳.{{$total_price}} - <span class="couponAmount">৳.0</span> ) =</strong></td>
-              <td class="label label-important" style="display:block"> <strong class="grand_total"> ৳.{{$total_price - Session::get('CountAmount')}} </strong></td>
+              <td class="label label-important" style="display:block"> <strong class="grand_total"> ৳.{{$total_price - Session::get('couponAmount')}} </strong></td>
           </tr>
         </table>
 

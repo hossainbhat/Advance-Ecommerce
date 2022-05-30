@@ -45,12 +45,13 @@
 			            @endif
 		            @endforeach
 		            <li><a href="#">About</a></li>
+					<li><a href="#">Contact</a></li>
 		          </ul>
 		          <form class="navbar-search pull-left" action="#">
 		            <input type="text" class="search-query span2" placeholder="Search"/>
 		          </form>
 		          <ul class="nav pull-right">
-				  <li><a href="#">Contact</a></li>
+				  
 				  <li class="divider-vertical"></li>
 					@if(Auth::check())
 						<li><a href="{{url('/account')}}">My Account</a></li>

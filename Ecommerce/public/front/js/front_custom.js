@@ -131,7 +131,7 @@ function get_filter(class_name){
 
 
 
-$("#getPrice").change(function(){
+$("#getPrice").on('change', function(){
     var size = $(this).val();
     if(size ==""){
         alert("Please select size");
@@ -367,6 +367,13 @@ $(document).on('click','.btnItemDelete',function(){
                alert("Error");
            }
         });
+    });
+
+    $(document).on('click','.delivaryAddressDelete',function(){
+       var result = confirm("Want to delete this Address ?");
+        if(!result){
+            return false;
+        }
     });
 
 });

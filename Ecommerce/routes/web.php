@@ -104,7 +104,12 @@ Route::namespace('Front')->group(function(){
         Route::post('update-user-pwd', [App\Http\Controllers\Front\UserController::class, 'updateUserPassword']);
         //apply coupon
         Route::post('/apply-coupon', [App\Http\Controllers\Front\ProductController::class, 'applyCoupon']);
-        Route::match(['get','post'],'/checkout', [App\Http\Controllers\Front\UserController::class, 'checkout']);
+        Route::match(['get','post'],'/checkout', [App\Http\Controllers\Front\ProductController::class, 'checkout']);
+        Route::match(['get','post'],'/add-edit-dalivary-address/{id?}', [App\Http\Controllers\Front\ProductController::class, 'addEditDalivaryAddress']);
+        Route::get('/delete-dalivary-address/{id}', [App\Http\Controllers\Front\ProductController::class, 'deleteDalivaryAddress']);
+        Route::get('/thanks', [App\Http\Controllers\Front\ProductController::class, 'thanks']);
+        Route::get('/orders', [App\Http\Controllers\Front\OrderController::class, 'orders']);
+        Route::get('/orders/{id}', [App\Http\Controllers\Front\OrderController::class, 'orderDetails']);
 
     });
 

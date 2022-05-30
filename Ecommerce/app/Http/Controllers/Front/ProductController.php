@@ -11,9 +11,14 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Coupon;
+use App\Models\Country;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\OrdersProduct;
+use App\Models\DeliveryAddress;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class ProductController extends Controller
 {
@@ -334,5 +339,170 @@ class ProductController extends Controller
           }
           }
         }
+      }
+
+      public function checkout(Request $request){
+        if($request->isMethod('post')){
+          $data = $request->all();
+          // echo Session::get('grand_total');
+          if(empty($data['address_id'])){
+            $message = "please select delivary address";
+            Session::flash('error_message',$message);
+            return redirect()->back();
+          }
+          if(empty($data['payment_getwaya'])){
+            $message = "please select Payment Method";
+            Session::flash('error_message',$message);
+            return redirect()->back();
+          }
+          // echo "<pre>"; print_r($data); die;
+          if($data['payment_getwaya']=='COD'){
+            $payment_method = "COD";
+          }else{
+            echo "comming soon"; die;
+            $payment_method = "Prepaid";
+          }
+
+          $dalivaryAddress = DeliveryAddress::where('id',$data['address_id'])->first()->toArray();
+          // dd($dalivaryAddress);die;
+          DB::beginTransaction();
+
+          $order = new Order;
+          $order->user_id = Auth::user()->id;
+          $order->name = $dalivaryAddress['name'];
+          $order->address = $dalivaryAddress['address'];
+          $order->city = $dalivaryAddress['city'];
+          $order->state = $dalivaryAddress['state'];
+          $order->country = $dalivaryAddress['country'];
+          $order->pincode = $dalivaryAddress['pincode'];
+          $order->mobile = $dalivaryAddress['mobile'];
+          $order->email = Auth::user()->email;
+          $order->shipping_charge = 0;
+          $order->coupon_code = Session::get('couponCode');
+          $order->coupon_amount = Session::get('couponAmount');
+          $order->order_status = "New";
+          $order->payment_method =  $payment_method;
+          $order->payment_getwaya = $data['payment_getwaya'];
+          $order->grand_total = Session::get('grand_total');
+          $order->save();
+
+          //get last insert order id
+          $order_id = DB::getPdo()->lastInsertId();
+          //get user cart item
+          $cartItems = Cart::where('user_id',Auth::user()->id)->get()->toArray();
+          foreach($cartItems as $key =>$item){
+            $cartItem = new OrdersProduct;
+            $cartItem->order_id = $order_id;
+            $cartItem->user_id = Auth::user()->id;
+
+            $getProductDetails = Product::select('product_code','product_name','product_color')->where('id',$item['product_id'])->first()->toArray();
+            $cartItem->product_id = $item['product_id'];
+            $cartItem->product_code = $getProductDetails['product_code'];
+            $cartItem->product_name = $getProductDetails['product_name'];
+            $cartItem->product_color = $getProductDetails['product_color'];
+            $cartItem->product_size = $item['size'];
+            $getDiscountedAttrPrice = Product::getDiscountedAttrPrice($item['product_id'],$item['size']);
+            $cartItem->product_price = $getDiscountedAttrPrice['final_price'];
+            $cartItem->product_qty = $item['quantity'];
+            $cartItem->save();
+          } 
+         
+          Session::put('order_id',$order_id);
+          DB::commit();
+
+          if($data['payment_getwaya']=='COD'){
+            return redirect('/thanks');
+          }else{
+            echo "prepaid Metod Comming Soon";die;
+          }
+
+          echo "order plased"; die;
+        }
+        $userCartItems = Cart::userCartItems();
+        $deliveryAddress = DeliveryAddress::deliveryAddress();
+        return view("front.products.checkout")->with(compact('userCartItems','deliveryAddress'));
+      }
+
+
+      public function thanks(){
+        if(Session::has('order_id')){
+          Cart::where('user_id',Auth::user()->id)->delete();
+        }else{
+          return redirect('/cart');
+        }
+        return view("front.products.thanks");
+      }
+
+      public function addEditDalivaryAddress(Request $request,$id=null,){
+        if($id==""){
+          $title = "Add Dalivary Address";
+          $address = new DeliveryAddress;
+          $message ="Dalivary Address added successfully";
+        }else{
+          $title = "Edit Dalivary Address";
+          $address = DeliveryAddress::find($id);
+          $message ="Dalivary Address has been updated successfully";
+        }
+
+        if($request->isMethod('post')){
+          $data = $request->all();
+          // echo "<pre>"; print_r($data);die;
+
+          $rulse = [
+            'name' => 'required|regex:/^[\pL\s\-]+$/u',
+            'address' => 'required',
+            'city' => 'required|regex:/^[\pL\s\-]+$/u',
+            'state' => 'required|regex:/^[\pL\s\-]+$/u',
+            'country' => 'required',
+            'pincode' => 'required|numeric',
+            'mobile' => 'required|numeric',
+        ];
+
+        $customMessage = [
+            'name.required' =>'name is required',
+            'name.regex' =>'Valid name is required',
+            'country.required' =>'country is required',
+            'address.required' =>'address is required',
+            'city.required' =>'city is required',
+            'city.regex' =>'Valid city is required',
+            'state.required' =>'state is required',
+            'state.regex' =>'Valid state is required',
+            'mobile.required' =>'mobile is required',
+            'mobile.numeric' =>'Valid mobile is required',
+            'pincode.required' =>'pincode is required',
+            'pincode.numeric' =>'Valid pincode is required',
+            'mobile.required' =>'mobile is required',
+            'mobile.numeric' =>'Valid mobile is required',
+        ];
+
+        $this->validate($request,$rulse,$customMessage);
+
+        $address->user_id = Auth::user()->id;
+        $address->name = $data['name'];
+        $address->address = $data['address'];
+        $address->city = $data['city'];
+        $address->state = $data['state'];
+        $address->country = $data['country'];
+        $address->pincode = $data['pincode'];
+        $address->mobile = $data['mobile'];
+        $address->status = 1;
+        $address->save();
+      
+        Session::put('success_message',$message);
+        
+       
+        return redirect('checkout');
+        }
+
+        $countries = Country::where('status',1)->get();
+
+        return view("front.products.add_edit_dalivary_address")->with(compact('countries','title','address'));
+      }
+
+      public function deleteDalivaryAddress($id){
+        DeliveryAddress::where('id',$id)->delete();
+        $message ="Deleviry address has been deleted successfully";
+        Session::put('success_message',$message);
+        return redirect()->back();
       }
 }

@@ -10,8 +10,9 @@ form.cmxform label.error, label.error {
 @section("content")
 <div class="span9">
     <ul class="breadcrumb">
-		<li><a href="index.html">Home</a> <span class="divider">/</span></li>
-		<li class="active">Login</li>
+		<li><a href="{{url('/')}}">Home</a> <span class="divider">/</span></li>
+		<li><a href="{{url('/account')}}">My Account</a> <span class="divider">/</span></li>
+		<li><a href="{{url('/orders')}}">My Order</a></li>
     </ul>
 	<h3> My Account</h3>	
 	<hr class="soft"/>
