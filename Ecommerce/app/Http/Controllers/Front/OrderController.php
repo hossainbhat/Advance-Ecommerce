@@ -20,6 +20,6 @@ class OrderController extends Controller
         // dd($orderDetails);die;
         return view("front.orders.order_details")->with(compact('orderDetails'));
 
-
     }
+
 }

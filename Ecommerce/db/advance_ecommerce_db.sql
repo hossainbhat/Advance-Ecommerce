@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2022 at 12:38 PM
+-- Generation Time: May 31, 2022 at 08:39 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -124,7 +124,6 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`id`, `session_id`, `user_id`, `product_id`, `size`, `quantity`, `created_at`, `updated_at`) VALUES
-(28, 'bh5BEb14UY9q0mhhS58EetBuglvvOB0ejDwsDUI7', 6, '8', 'Medium', 1, '2022-03-05 16:19:26', '2022-03-05 17:07:19'),
 (32, 'pW69WzIohBEqPBLyl80cuNPehNnswExVwa9bOVKS', 1, '9', 'Large', 1, '2022-03-15 01:42:25', '2022-03-15 01:45:16');
 
 -- --------------------------------------------------------
@@ -484,7 +483,8 @@ CREATE TABLE `delivery_addresses` (
 --
 
 INSERT INTO `delivery_addresses` (`id`, `user_id`, `name`, `address`, `city`, `state`, `country`, `pincode`, `mobile`, `status`, `created_at`, `updated_at`) VALUES
-(1, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 1, '2022-05-25 23:24:52', '2022-05-25 23:24:52');
+(1, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 1, '2022-05-25 23:24:52', '2022-05-25 23:24:52'),
+(2, 6, 'Md Hossain Bhat', 'H#1,R#19,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1257', '04238480204', 1, '2022-05-26 10:00:53', '2022-05-26 10:00:53');
 
 -- --------------------------------------------------------
 
@@ -536,7 +536,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, '2022_03_08_180930_create_coupons_table', 3),
 (18, '2022_05_23_164337_create_delivery_addresses_table', 3),
 (19, '2022_05_26_075520_create_orders_table', 4),
-(20, '2022_05_26_080158_create_orders_products_table', 5);
+(20, '2022_05_26_080158_create_orders_products_table', 5),
+(21, '2022_05_31_062802_create_order_statuses_table', 6);
 
 -- --------------------------------------------------------
 
@@ -556,8 +557,8 @@ CREATE TABLE `orders` (
   `mobile` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `shipping_charge` double NOT NULL,
-  `coupon_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `coupon_amount` double(8,2) NOT NULL,
+  `coupon_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `coupon_amount` double(8,2) DEFAULT NULL,
   `order_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `payment_method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `payment_getwaya` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -565,6 +566,15 @@ CREATE TABLE `orders` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `name`, `address`, `city`, `state`, `country`, `pincode`, `mobile`, `email`, `shipping_charge`, `coupon_code`, `coupon_amount`, `order_status`, `payment_method`, `payment_getwaya`, `grand_total`, `created_at`, `updated_at`) VALUES
+(1, 6, 'Md Hossain Bhat', 'H#1,R#19,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1257', '04238480204', 'roja100@yopmail.com', 0, 'test', 52.00, 'New', 'COD', 'COD', 988.00, '2022-05-26 10:01:09', '2022-05-26 10:01:09'),
+(2, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 'roja100@yopmail.com', 0, 'test', 52.00, 'New', 'COD', 'COD', 280.50, '2022-05-26 10:04:29', '2022-05-26 10:04:29'),
+(3, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 'roja100@yopmail.com', 0, 'test', 38.00, 'New', 'COD', 'COD', 712.00, '2022-05-30 01:36:20', '2022-05-30 01:36:20');
 
 -- --------------------------------------------------------
 
@@ -586,6 +596,44 @@ CREATE TABLE `orders_products` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `orders_products`
+--
+
+INSERT INTO `orders_products` (`id`, `order_id`, `user_id`, `product_id`, `product_code`, `product_name`, `product_color`, `product_price`, `product_size`, `product_qty`, `created_at`, `updated_at`) VALUES
+(1, 1, 6, 4, 'BLK202', 'Black T-Shirt', 'Black', 360.00, 'Medium', 2, '2022-05-26 10:01:09', '2022-05-26 10:01:09'),
+(2, 1, 6, 9, 'B0021', 'Royal Blue T-Shirt', 'Blue', 320.00, 'Medium', 1, '2022-05-26 10:01:09', '2022-05-26 10:01:09'),
+(3, 2, 6, 5, 'BLU202', 'Blue Easy T-Shirt', 'Blue', 332.50, 'Large', 1, '2022-05-26 10:04:29', '2022-05-26 10:04:29'),
+(4, 3, 6, 10, 'R001', 'red color', 'red', 250.00, 'Small', 3, '2022-05-30 01:36:20', '2022-05-30 01:36:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_statuses`
+--
+
+CREATE TABLE `order_statuses` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_statuses`
+--
+
+INSERT INTO `order_statuses` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'New', 1, NULL, NULL),
+(2, 'Panding', 1, NULL, NULL),
+(3, 'Hold', 1, NULL, NULL),
+(4, 'Cancelled', 1, NULL, NULL),
+(5, 'In Process', 1, NULL, NULL),
+(6, 'Piad', 1, NULL, NULL),
+(7, 'Shipped', 1, NULL, NULL),
+(8, 'Delivered', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -793,7 +841,7 @@ INSERT INTO `users` (`id`, `name`, `address`, `city`, `state`, `country`, `pinco
 (3, 'MD Hossain Bhat', '', '', '', '', '', '', 'hossainbhatcse@gmail.com', NULL, '$2y$10$zKzFfYBDuqnDywRUT0OmUOr9UBUkrImxfADdLnkv24r.p7..1VkLe', 0, NULL, '2022-03-04 20:40:06', '2022-03-04 20:40:06'),
 (4, 'MD Hossain Bhat', '', '', '', '', '', '', 'demo_user@gmail.com', NULL, '$2y$10$Kx8XeLr21Io0/w3huUpOjOaNnB1tGZBKwjRWDGFwHAsSQCgr.t0zS', 0, NULL, '2022-03-04 20:42:27', '2022-03-04 20:42:27'),
 (5, 'kamal khan', '', '', '', '', '', '', 'kamal8080@yopmail.com', NULL, '$2y$10$SB7Z/E2YJsb6xOuSF1Nmw.U3hy7jxwpMs5NlG7HNpazfrF1fxX/VC', 0, NULL, '2022-03-04 20:47:23', '2022-03-04 23:09:15'),
-(6, 'roja', '', '', '', '', '', '', 'roja100@yopmail.com', NULL, '$2y$10$p0P9pl1biF1G.Hrh..dw/uMPsh8HgbHDuDlsWWZdNndA9fyUEVvV2', 1, NULL, '2022-03-05 16:21:27', '2022-03-05 16:21:49');
+(6, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '01838322523', 'roja100@yopmail.com', NULL, '$2y$10$p0P9pl1biF1G.Hrh..dw/uMPsh8HgbHDuDlsWWZdNndA9fyUEVvV2', 1, NULL, '2022-03-05 16:21:27', '2022-05-30 23:48:03');
 
 --
 -- Indexes for dumped tables
@@ -868,6 +916,12 @@ ALTER TABLE `orders_products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `order_statuses`
+--
+ALTER TABLE `order_statuses`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
@@ -938,7 +992,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -956,7 +1010,7 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `delivery_addresses`
 --
 ALTER TABLE `delivery_addresses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -968,19 +1022,25 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders_products`
 --
 ALTER TABLE `orders_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `order_statuses`
+--
+ALTER TABLE `order_statuses`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

@@ -37,6 +37,8 @@
 						</li>
 						<li> <a href="{{url('admin/coupons')}}"><i class="bx bx-right-arrow-alt"></i>Coupons</a>
 						</li>
+						<li> <a href="{{url('admin/orders')}}"><i class="bx bx-right-arrow-alt"></i>Orders</a>
+						</li>
 
 
 					</ul>
