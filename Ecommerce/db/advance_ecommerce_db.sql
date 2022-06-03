@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2022 at 08:39 AM
+-- Generation Time: Jun 03, 2022 at 05:55 AM
 -- Server version: 10.4.24-MariaDB
--- PHP Version: 8.0.19
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -124,7 +124,8 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`id`, `session_id`, `user_id`, `product_id`, `size`, `quantity`, `created_at`, `updated_at`) VALUES
-(32, 'pW69WzIohBEqPBLyl80cuNPehNnswExVwa9bOVKS', 1, '9', 'Large', 1, '2022-03-15 01:42:25', '2022-03-15 01:45:16');
+(32, 'pW69WzIohBEqPBLyl80cuNPehNnswExVwa9bOVKS', 1, '9', 'Large', 1, '2022-03-15 01:42:25', '2022-03-15 01:45:16'),
+(42, 'LTWT27VE8wWj7FF2mDQwREXrM5mjNehwy7ByurfQ', 0, '10', 'Medium', 1, '2022-06-01 01:28:06', '2022-06-01 01:28:06');
 
 -- --------------------------------------------------------
 
@@ -455,7 +456,7 @@ CREATE TABLE `coupons` (
 --
 
 INSERT INTO `coupons` (`id`, `coupon_option`, `coupon_code`, `categories`, `users`, `coupon_type`, `amount_type`, `amount`, `expiry_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Manual', 'test', '1,2,3', '', 'Single Time', 'Percentage', 5.00, '2022-05-30', 1, '2022-05-25 23:23:55', '2022-05-25 23:23:55');
+(1, 'Manual', 'test', '1,2,3', '', 'Single Time', 'Percentage', 5.00, '2022-06-04', 1, '2022-05-25 23:23:55', '2022-06-01 02:24:49');
 
 -- --------------------------------------------------------
 
@@ -484,7 +485,8 @@ CREATE TABLE `delivery_addresses` (
 
 INSERT INTO `delivery_addresses` (`id`, `user_id`, `name`, `address`, `city`, `state`, `country`, `pincode`, `mobile`, `status`, `created_at`, `updated_at`) VALUES
 (1, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 1, '2022-05-25 23:24:52', '2022-05-25 23:24:52'),
-(2, 6, 'Md Hossain Bhat', 'H#1,R#19,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1257', '04238480204', 1, '2022-05-26 10:00:53', '2022-05-26 10:00:53');
+(2, 6, 'Md Hossain Bhat', 'H#1,R#19,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1257', '04238480204', 1, '2022-05-26 10:00:53', '2022-05-26 10:00:53'),
+(3, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 1, '2022-06-01 02:25:34', '2022-06-01 02:25:34');
 
 -- --------------------------------------------------------
 
@@ -574,7 +576,8 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`id`, `user_id`, `name`, `address`, `city`, `state`, `country`, `pincode`, `mobile`, `email`, `shipping_charge`, `coupon_code`, `coupon_amount`, `order_status`, `payment_method`, `payment_getwaya`, `grand_total`, `created_at`, `updated_at`) VALUES
 (1, 6, 'Md Hossain Bhat', 'H#1,R#19,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1257', '04238480204', 'roja100@yopmail.com', 0, 'test', 52.00, 'New', 'COD', 'COD', 988.00, '2022-05-26 10:01:09', '2022-05-26 10:01:09'),
 (2, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 'roja100@yopmail.com', 0, 'test', 52.00, 'New', 'COD', 'COD', 280.50, '2022-05-26 10:04:29', '2022-05-26 10:04:29'),
-(3, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 'roja100@yopmail.com', 0, 'test', 38.00, 'New', 'COD', 'COD', 712.00, '2022-05-30 01:36:20', '2022-05-30 01:36:20');
+(3, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 'roja100@yopmail.com', 0, 'test', 38.00, 'New', 'COD', 'COD', 712.00, '2022-05-30 01:36:20', '2022-05-30 01:36:20'),
+(4, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, 'test', 49.00, 'New', 'COD', 'COD', 922.20, '2022-06-01 02:26:11', '2022-06-02 01:53:18');
 
 -- --------------------------------------------------------
 
@@ -605,7 +608,10 @@ INSERT INTO `orders_products` (`id`, `order_id`, `user_id`, `product_id`, `produ
 (1, 1, 6, 4, 'BLK202', 'Black T-Shirt', 'Black', 360.00, 'Medium', 2, '2022-05-26 10:01:09', '2022-05-26 10:01:09'),
 (2, 1, 6, 9, 'B0021', 'Royal Blue T-Shirt', 'Blue', 320.00, 'Medium', 1, '2022-05-26 10:01:09', '2022-05-26 10:01:09'),
 (3, 2, 6, 5, 'BLU202', 'Blue Easy T-Shirt', 'Blue', 332.50, 'Large', 1, '2022-05-26 10:04:29', '2022-05-26 10:04:29'),
-(4, 3, 6, 10, 'R001', 'red color', 'red', 250.00, 'Small', 3, '2022-05-30 01:36:20', '2022-05-30 01:36:20');
+(4, 3, 6, 10, 'R001', 'red color', 'red', 250.00, 'Small', 3, '2022-05-30 01:36:20', '2022-05-30 01:36:20'),
+(5, 4, 12, 4, 'BLK202', 'Black T-Shirt', 'Black', 360.00, 'Medium', 1, '2022-06-01 02:26:11', '2022-06-01 02:26:11'),
+(6, 4, 12, 6, 'RED202', 'Red Casual T-Shirt', 'Red', 304.00, 'Medium', 1, '2022-06-01 02:26:11', '2022-06-01 02:26:11'),
+(7, 4, 12, 8, 'CT001', 'Casual  t-shirt', 'white', 307.20, 'Medium', 1, '2022-06-01 02:26:11', '2022-06-01 02:26:11');
 
 -- --------------------------------------------------------
 
@@ -782,9 +788,8 @@ CREATE TABLE `products_images` (
 
 INSERT INTO `products_images` (`id`, `product_id`, `image`, `status`, `created_at`, `updated_at`) VALUES
 (7, 3, '542231594924865.jpg', 1, '2020-07-16 06:41:05', '2020-08-04 07:20:53'),
-(9, 4, '539981602687479.jpg', 1, '2020-10-14 02:57:59', '2020-10-14 02:57:59'),
-(10, 4, '716881602691745.jpg', 1, '2020-10-14 04:09:05', '2020-10-14 04:09:05'),
-(11, 4, '566201602691772.jpeg', 1, '2020-10-14 04:09:32', '2020-10-14 04:09:32');
+(12, 8, '111161653996269.jpg', 1, '2022-05-31 05:24:29', '2022-05-31 05:24:29'),
+(13, 4, '913851654091401.jpg', 1, '2022-06-01 07:50:01', '2022-06-01 07:50:01');
 
 -- --------------------------------------------------------
 
@@ -817,16 +822,16 @@ INSERT INTO `sections` (`id`, `name`, `status`, `created_at`, `updated_at`) VALU
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `state` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pincode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pincode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mobile` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` tinyint(4) NOT NULL,
+  `status` tinyint(4) DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -841,7 +846,12 @@ INSERT INTO `users` (`id`, `name`, `address`, `city`, `state`, `country`, `pinco
 (3, 'MD Hossain Bhat', '', '', '', '', '', '', 'hossainbhatcse@gmail.com', NULL, '$2y$10$zKzFfYBDuqnDywRUT0OmUOr9UBUkrImxfADdLnkv24r.p7..1VkLe', 0, NULL, '2022-03-04 20:40:06', '2022-03-04 20:40:06'),
 (4, 'MD Hossain Bhat', '', '', '', '', '', '', 'demo_user@gmail.com', NULL, '$2y$10$Kx8XeLr21Io0/w3huUpOjOaNnB1tGZBKwjRWDGFwHAsSQCgr.t0zS', 0, NULL, '2022-03-04 20:42:27', '2022-03-04 20:42:27'),
 (5, 'kamal khan', '', '', '', '', '', '', 'kamal8080@yopmail.com', NULL, '$2y$10$SB7Z/E2YJsb6xOuSF1Nmw.U3hy7jxwpMs5NlG7HNpazfrF1fxX/VC', 0, NULL, '2022-03-04 20:47:23', '2022-03-04 23:09:15'),
-(6, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '01838322523', 'roja100@yopmail.com', NULL, '$2y$10$p0P9pl1biF1G.Hrh..dw/uMPsh8HgbHDuDlsWWZdNndA9fyUEVvV2', 1, NULL, '2022-03-05 16:21:27', '2022-05-30 23:48:03');
+(6, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '01838322523', 'roja100@yopmail.com', NULL, '$2y$10$p0P9pl1biF1G.Hrh..dw/uMPsh8HgbHDuDlsWWZdNndA9fyUEVvV2', 1, NULL, '2022-03-05 16:21:27', '2022-05-30 23:48:03'),
+(8, 'Kobir', NULL, NULL, NULL, NULL, NULL, '01838322523', 'kobir@yopmail.com', NULL, '$2y$10$2SrA6/hkFKapFhdnFFxKqOD8ONSS3jqa62/CtX.qUfhYrDlYzi1l2', 0, NULL, '2022-06-01 01:44:55', '2022-06-01 01:44:55'),
+(9, 'Laboni', NULL, NULL, NULL, NULL, NULL, '08945748900', 'laboni001@yopmail.com', NULL, '$2y$10$WZ7CUFwn//rZIDpVSTk6reE5dmtMl4Xigx5oTSC0NRMfvQHci1nYa', 0, NULL, '2022-06-01 01:48:30', '2022-06-01 01:48:30'),
+(10, 'testtab', NULL, NULL, NULL, NULL, NULL, '01838322523', 'testtab@yopmail.com', NULL, '$2y$10$pwsJhWpAMSt6eu5YDt5F3.vKAc2cD.kKvmSlP9dVTnQyOVyixhbjW', 0, NULL, '2022-06-01 01:58:01', '2022-06-01 01:58:01'),
+(11, 'look', NULL, NULL, NULL, NULL, NULL, '01838322523', 'look@yopmail.com', NULL, '$2y$10$6Pvlp976i6iqCXi4dnWsc.MUfbZbshz0zzTS8bKzizmIFfNcKAHF6', 0, NULL, '2022-06-01 02:01:23', '2022-06-01 02:01:23'),
+(12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '08945748900', 'demotest@yopmail.com', NULL, '$2y$10$njzXHsssWMdh6BAL3XGUDufwJhqHZtM7OXhqaojgLuNYVRauiGb/S', 1, NULL, '2022-06-01 02:20:59', '2022-06-01 02:25:55');
 
 --
 -- Indexes for dumped tables
@@ -992,7 +1002,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1010,7 +1020,7 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `delivery_addresses`
 --
 ALTER TABLE `delivery_addresses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -1028,13 +1038,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `orders_products`
 --
 ALTER TABLE `orders_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `order_statuses`
@@ -1064,7 +1074,7 @@ ALTER TABLE `products_attributes`
 -- AUTO_INCREMENT for table `products_images`
 --
 ALTER TABLE `products_images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `sections`
@@ -1076,7 +1086,7 @@ ALTER TABLE `sections`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

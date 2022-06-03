@@ -32,6 +32,7 @@ form.cmxform label.error, label.error {
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+	<?php Session::forget('error_message') ?>
     @endif
 		<div class="span4">
 			<div class="well">
@@ -99,3 +100,4 @@ form.cmxform label.error, label.error {
 	
 </div>
 @endsection
+
