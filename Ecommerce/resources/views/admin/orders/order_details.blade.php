@@ -176,13 +176,25 @@
                                                 <tr>
                                                     <td>
                                                     
-                                                        <select name="order_status" required="" class="form-select form-select-sm mb-3" aria-label=".form-select-sm example">
+                                                        <select name="order_status" id="order_status" required="" class="form-select form-select-sm mb-3" aria-label=".form-select-sm example">
                                                             <option selected="">Select Status</option>
                                                             @foreach($orderStatus as $status)
                                                                 <option value="{{$status['name']}}" @if($orderDetails['order_status'] && $orderDetails['order_status'] == $status['name']) selected="" @endif>{{$status['name']}}</option>
                                                             @endforeach
+                                                        </select>
                                                     </td>
+                                                    
+                                                    <td id="courier_name"><input style="width:120px;" type="text" name="courier_name" placeholder="Courier Name"></td>
+                                                    <td id="traking_number"> <input style="width:120px;" type="text" name="traking_number" placeholder="Traking Number"></td>
+
                                                     <td><input type="submit" value="Update" class="btn btn-success btn-sm"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td  colspan="4">
+                                                        @foreach($orderLog as $log)
+                                                            <strong>{{$log['order_status']}}</strong> <br>{{date('d-M-Y g:i:a', strtotime($log['created_at']))}} <hr>
+                                                        @endforeach
+                                                    </td>
                                                 </tr>
                                         </form>
 								</table>

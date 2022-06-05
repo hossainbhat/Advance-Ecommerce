@@ -41,7 +41,7 @@
 										<td>{{$order['email']}}</td>
 										<td>
                                         @foreach($order['orders_products'] as $pro)
-                                            {{$pro['product_code']}} <br>
+                                            {{$pro['product_code']}} ({{$pro['product_qty']}}) <br>
                                         @endforeach
                                         </td>
 										<td>{{$order['grand_total']}}</td>

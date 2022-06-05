@@ -235,4 +235,18 @@ $(document).ready(function(){
 			});
 		});
 
+		//show curier traking number and name
+		$("#courier_name").hide();
+		$("#traking_number").hide();
+
+		$("#order_status").on('change',function(){
+			if(this.value=="Shipped"){
+				$("#courier_name").show();
+				$("#traking_number").show();
+			}else{
+				$("#courier_name").hide();
+				$("#traking_number").hide();
+			}
+		});
+
 });

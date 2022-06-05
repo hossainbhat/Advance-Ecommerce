@@ -14,9 +14,11 @@ use App\Models\Coupon;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Sms;
 use App\Models\OrdersProduct;
 use App\Models\DeliveryAddress;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use DB;
 
@@ -411,6 +413,25 @@ class ProductController extends Controller
           DB::commit();
 
           if($data['payment_getwaya']=='COD'){
+            //send sms
+            $message = "Dear Customer, Your Order ".$order_id." has been successfull placed with Online StoreBD.com. We will intimate you once your order is Shipped";
+            $mobile = Auth::user()->mobile;
+            Sms::sendSms($message,$mobile);
+
+            $orderDetails = Order::with('orders_products')->where('id',$order_id)->first()->toArray();
+            // echo "<pre>"; print_r($orderDetails); die;
+            //send email
+            $email = Auth::user()->email;
+            $messageData = [
+              'email' => $email,
+              'name' => Auth::user()->name,
+              'order_id' =>$order_id,
+              'orderDetails' =>$orderDetails
+            ];
+            Mail::send('emails.order',$messageData, function($message) use($email){
+              $message->to($email)->subject('Order Placed - Online StoreBD.com');
+            });
+
             return redirect('/thanks');
           }else{
             echo "prepaid Metod Comming Soon";die;

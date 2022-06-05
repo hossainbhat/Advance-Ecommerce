@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2022 at 05:55 AM
+-- Generation Time: Jun 05, 2022 at 11:10 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -539,7 +539,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (18, '2022_05_23_164337_create_delivery_addresses_table', 3),
 (19, '2022_05_26_075520_create_orders_table', 4),
 (20, '2022_05_26_080158_create_orders_products_table', 5),
-(21, '2022_05_31_062802_create_order_statuses_table', 6);
+(21, '2022_05_31_062802_create_order_statuses_table', 6),
+(22, '2022_06_05_090854_create_orders_logs_table', 7);
 
 -- --------------------------------------------------------
 
@@ -577,7 +578,28 @@ INSERT INTO `orders` (`id`, `user_id`, `name`, `address`, `city`, `state`, `coun
 (1, 6, 'Md Hossain Bhat', 'H#1,R#19,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1257', '04238480204', 'roja100@yopmail.com', 0, 'test', 52.00, 'New', 'COD', 'COD', 988.00, '2022-05-26 10:01:09', '2022-05-26 10:01:09'),
 (2, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 'roja100@yopmail.com', 0, 'test', 52.00, 'New', 'COD', 'COD', 280.50, '2022-05-26 10:04:29', '2022-05-26 10:04:29'),
 (3, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 'roja100@yopmail.com', 0, 'test', 38.00, 'New', 'COD', 'COD', 712.00, '2022-05-30 01:36:20', '2022-05-30 01:36:20'),
-(4, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, 'test', 49.00, 'New', 'COD', 'COD', 922.20, '2022-06-01 02:26:11', '2022-06-02 01:53:18');
+(4, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, 'test', 49.00, 'New', 'COD', 'COD', 922.20, '2022-06-01 02:26:11', '2022-06-02 01:53:18'),
+(5, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, NULL, NULL, 'New', 'COD', 'COD', 640.00, '2022-06-02 22:38:15', '2022-06-02 22:38:15'),
+(6, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, NULL, NULL, 'New', 'COD', 'COD', 640.00, '2022-06-02 23:32:14', '2022-06-02 23:32:14'),
+(7, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, NULL, NULL, 'New', 'COD', 'COD', 540.00, '2022-06-02 23:36:15', '2022-06-02 23:36:15'),
+(8, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, NULL, NULL, 'New', 'COD', 'COD', 997.50, '2022-06-02 23:39:36', '2022-06-02 23:39:36'),
+(9, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, NULL, NULL, 'New', 'COD', 'COD', 540.00, '2022-06-02 23:45:23', '2022-06-02 23:45:23'),
+(10, 12, 'kamal', 'H#13,R#7,Nikunja-2,Khilkhet,Dhaka', 'Dhaka', 'Khilkhet', 'Bangladesh', '1228', '089457489', 'demotest@yopmail.com', 0, NULL, NULL, 'New', 'COD', 'COD', 665.00, '2022-06-02 23:47:26', '2022-06-05 02:33:13'),
+(11, 6, 'kamal khan', 'H#13,R#7,Nikunja-2', 'dhaka', 'khilkhet', 'Bangladesh', '1258', '01838322523', 'roja100@yopmail.com', 0, 'test', 17.00, 'Delivered', 'COD', 'COD', 319.00, '2022-06-04 03:27:25', '2022-06-05 03:04:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders_logs`
+--
+
+CREATE TABLE `orders_logs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `order_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -611,7 +633,14 @@ INSERT INTO `orders_products` (`id`, `order_id`, `user_id`, `product_id`, `produ
 (4, 3, 6, 10, 'R001', 'red color', 'red', 250.00, 'Small', 3, '2022-05-30 01:36:20', '2022-05-30 01:36:20'),
 (5, 4, 12, 4, 'BLK202', 'Black T-Shirt', 'Black', 360.00, 'Medium', 1, '2022-06-01 02:26:11', '2022-06-01 02:26:11'),
 (6, 4, 12, 6, 'RED202', 'Red Casual T-Shirt', 'Red', 304.00, 'Medium', 1, '2022-06-01 02:26:11', '2022-06-01 02:26:11'),
-(7, 4, 12, 8, 'CT001', 'Casual  t-shirt', 'white', 307.20, 'Medium', 1, '2022-06-01 02:26:11', '2022-06-01 02:26:11');
+(7, 4, 12, 8, 'CT001', 'Casual  t-shirt', 'white', 307.20, 'Medium', 1, '2022-06-01 02:26:11', '2022-06-01 02:26:11'),
+(8, 5, 12, 9, 'B0021', 'Royal Blue T-Shirt', 'Blue', 320.00, 'Medium', 2, '2022-06-02 22:38:15', '2022-06-02 22:38:15'),
+(9, 6, 12, 9, 'B0021', 'Royal Blue T-Shirt', 'Blue', 320.00, 'Medium', 2, '2022-06-02 23:32:14', '2022-06-02 23:32:14'),
+(10, 7, 12, 10, 'R001', 'red color', 'red', 270.00, 'Medium', 2, '2022-06-02 23:36:15', '2022-06-02 23:36:15'),
+(11, 8, 12, 7, 'GRN202', 'Green Casual T-Shirt', 'Green', 332.50, 'Medium', 3, '2022-06-02 23:39:36', '2022-06-02 23:39:36'),
+(12, 9, 12, 10, 'R001', 'red color', 'red', 270.00, 'Medium', 2, '2022-06-02 23:45:23', '2022-06-02 23:45:23'),
+(13, 10, 12, 7, 'GRN202', 'Green Casual T-Shirt', 'Green', 332.50, 'Medium', 2, '2022-06-02 23:47:26', '2022-06-02 23:47:26'),
+(14, 11, 6, 8, 'CT001', 'Casual  t-shirt', 'white', 336.00, 'Large', 1, '2022-06-04 03:27:25', '2022-06-04 03:27:25');
 
 -- --------------------------------------------------------
 
@@ -920,6 +949,12 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `orders_logs`
+--
+ALTER TABLE `orders_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `orders_products`
 --
 ALTER TABLE `orders_products`
@@ -1002,7 +1037,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1032,19 +1067,25 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `orders_logs`
+--
+ALTER TABLE `orders_logs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders_products`
 --
 ALTER TABLE `orders_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `order_statuses`
