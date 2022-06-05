@@ -36,6 +36,18 @@
                                             <td>Order Status</td>
                                             <td>{{$orderDetails['order_status']}}</td>
                                         </tr>
+                                        @if(!empty($orderDetails['courier_name']))
+                                        <tr>
+                                            <td>Courier Name</td>
+                                            <td>{{$orderDetails['courier_name']}}</td>
+                                        </tr>
+                                        @endif 
+                                        @if(!empty($orderDetails['traking_number']))
+                                        <tr>
+                                            <td>Traking Number</td>
+                                            <td>{{$orderDetails['traking_number']}}</td>
+                                        </tr>
+                                        @endif 
                                         <tr>
                                             <td>Order Total</td>
                                             <td>{{$orderDetails['grand_total']}}</td>
@@ -184,15 +196,15 @@
                                                         </select>
                                                     </td>
                                                     
-                                                    <td id="courier_name"><input style="width:120px;" type="text" name="courier_name" placeholder="Courier Name"></td>
-                                                    <td id="traking_number"> <input style="width:120px;" type="text" name="traking_number" placeholder="Traking Number"></td>
+                                                    <td @if(empty($orderDetails['courier_name'])) id="courier_name" @endif><input style="width:120px;" type="text" name="courier_name" placeholder="Courier Name" value="{{$orderDetails['courier_name']}}"></td>
+                                                    <td @if(empty($orderDetails['traking_number'])) id="traking_number" @endif> <input style="width:120px;" type="text" name="traking_number" placeholder="Traking Number" value="{{$orderDetails['traking_number']}}"></td>
 
                                                     <td><input type="submit" value="Update" class="btn btn-success btn-sm"></td>
                                                 </tr>
                                                 <tr>
                                                     <td  colspan="4">
                                                         @foreach($orderLog as $log)
-                                                            <strong>{{$log['order_status']}}</strong> <br>{{date('d-M-Y g:i:a', strtotime($log['created_at']))}} <hr>
+                                                            <strong>{{$log['order_status']}}</strong> <br>{{date('d-M-Y g:i:sa', strtotime($log['created_at']))}} <hr>
                                                         @endforeach
                                                     </td>
                                                 </tr>

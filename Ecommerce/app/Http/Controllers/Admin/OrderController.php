@@ -57,6 +57,8 @@ class OrderController extends Controller
               'name' => $deliveryDetails['name'],
               'order_id' =>$data['order_id'],
               'order_status' =>$data['order_status'],
+              'courier_name' =>$data['courier_name'],
+              'traking_number' =>$data['traking_number'],
               'orderDetails' =>$orderDetails
             ];
             Mail::send('emails.order_status',$messageData, function($message) use($email){
@@ -71,5 +73,11 @@ class OrderController extends Controller
         $log->order_status = $data['order_status'];
         $log->save();
         return redirect()->back();
+    }
+
+    public function viewOrderInvoice($id){
+      $orderDetails = Order::with('orders_products')->where('id',$id)->first()->toArray();
+      $userDetails = User::where('id',$orderDetails['user_id'])->first()->toArray();
+      return view("admin.orders.order_invoice")->with(compact('orderDetails','userDetails'));
     }
 }

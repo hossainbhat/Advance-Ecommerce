@@ -22,6 +22,18 @@
                         <td>Order Status</td>
                         <td>{{$orderDetails['order_status']}}</td>
                     </tr>
+                    @if(!empty($orderDetails['courier_name']))
+                    <tr>
+                        <td>Courier Name</td>
+                        <td>{{$orderDetails['courier_name']}}</td>
+                    </tr>
+                    @endif 
+                    @if(!empty($orderDetails['traking_number']))
+                    <tr>
+                        <td>Traking Number</td>
+                        <td>{{$orderDetails['traking_number']}}</td>
+                    </tr>
+                    @endif 
                     <tr>
                         <td>Order Total</td>
                         <td>{{$orderDetails['grand_total']}}</td>

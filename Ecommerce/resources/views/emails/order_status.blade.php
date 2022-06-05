@@ -9,6 +9,10 @@
         <tr><td>Hello {{$name}},</td></tr>
         <tr><td>&nbsp;</td></tr>
         <tr><td>Your Order #{{$order_id}} status has been updated to {{$order_status}}. Your Order Details are as below:-</td></tr>
+        @if(!empty($courier_name) && !empty($traking_number))
+        <tr><td>&nbsp;</td></tr>
+        <tr><td>Courier Name is {{$courier_name}} and Traking Number is #{{$traking_number}}</td></tr>
+        @endif 
         <tr><td>&nbsp;</td></tr>
         <tr><td>Order No: {{$order_id}}</td></tr>
         <tr><td>&nbsp;</td></tr>

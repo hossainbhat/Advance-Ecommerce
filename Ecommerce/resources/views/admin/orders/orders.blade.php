@@ -48,8 +48,11 @@
 										<td>{{$order['order_status']}}</td>
 										<td>{{$order['payment_method']}}</td>
 										<td>
-											<a href="{{url('admin/order/'.$order['id'])}}"><i class="btn btn-info btn-sm fadeIn animated bx bx-file-blank"></i></a>  
-
+										<a href="{{url('admin/order/'.$order['id'])}}"><i class="btn btn-info btn-sm fadeIn animated bx bx-file-blank"></i></a>  
+										&nbsp;
+										@if($order['order_status']=="Shipped" || $order['order_status']=="Delivered")
+										<a href="{{url('admin/view-order-invoice/'.$order['id'])}}" target="__blanck"><i class="btn btn-success btn-sm fadeIn animated bx bx-printer"></i></a>  
+										@endif 
 									</tr> 
                                 @endforeach
 									
