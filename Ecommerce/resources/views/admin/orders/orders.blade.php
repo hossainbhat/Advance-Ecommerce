@@ -28,7 +28,7 @@
 										<th>Product</th>
 										<th>Amount</th>
 										<th>Status</th>
-										<th>Payment Method</th>
+										<th>Payment</th>
 										<th width="10%">Action</th>
 									</tr>
 								</thead>
@@ -52,6 +52,8 @@
 										&nbsp;
 										@if($order['order_status']=="Shipped" || $order['order_status']=="Delivered")
 										<a href="{{url('admin/view-order-invoice/'.$order['id'])}}" target="__blanck"><i class="btn btn-success btn-sm fadeIn animated bx bx-printer"></i></a>  
+										&nbsp;
+										<a href="{{url('admin/print-pdf-invoice/'.$order['id'])}}" target="__blanck"><i class="btn btn-primary btn-sm fadeIn animated bx bx-save"></i></a>  
 										@endif 
 									</tr> 
                                 @endforeach

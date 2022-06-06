@@ -18,12 +18,18 @@
 .table > tbody > tr > .thick-line {
     border-top: 2px solid;
 }
+
 </style>
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
     		<div class="invoice-title">
     			<h2>Invoice</h2><h3 class="pull-right">Order # {{$orderDetails['id']}}</h3>
+                <br>
+                <span style="float:right;">
+                    <?php echo DNS1D::getBarcodeHTML($orderDetails['id'], 'C39'); ?>
+                </span>
+                <br>
     		</div>
     		<hr>
     		<div class="row">
@@ -95,7 +101,7 @@
         							<td><strong>Item</strong></td>
         							<td class="text-center"><strong>Price</strong></td>
         							<td class="text-center"><strong>Quantity</strong></td>
-        							<td class="text-right"><strong>Totals</strong></td>
+        							<td class="text-right"><strong>Total</strong></td>
                                 </tr>
     						</thead>
     						<tbody>
@@ -107,6 +113,7 @@
                                         Code :{{$product['product_code']}} <br>
                                         Size :{{$product['product_size']}} <br>
                                         Color :{{$product['product_color']}} <br>
+										<?php echo DNS1D::getBarcodeHTML($product['product_code'], 'C39'); ?>
                                     </td>
     								<td class="text-center">Tk. {{$product['product_price']}}</td>
     								<td class="text-center">{{$product['product_qty']}}</td>
@@ -140,7 +147,7 @@
     							<tr>
     								<td class="no-line"></td>
     								<td class="no-line"></td>
-    								<td class="no-line text-center"><strong>Total</strong></td>
+    								<td class="no-line text-center"><strong>Grand Total</strong></td>
     								<td class="no-line text-right">Tk. {{$orderDetails['grand_total']}}</td>
     							</tr>
     						</tbody>

@@ -440,6 +440,12 @@ class ProductController extends Controller
           echo "order plased"; die;
         }
         $userCartItems = Cart::userCartItems();
+
+        if(count($userCartItems)==0){
+          $message ="Shopping cart is empty!. please add product to cseckout";
+          Session::put('error_message',$message);
+          return redirect('cart');
+        }
         $deliveryAddress = DeliveryAddress::deliveryAddress();
         return view("front.products.checkout")->with(compact('userCartItems','deliveryAddress'));
       }
