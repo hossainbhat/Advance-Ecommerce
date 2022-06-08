@@ -69,6 +69,11 @@ Route::prefix('/admin')->namespace('Admin')->group(function(){
         Route::post('/update-order-status', [App\Http\Controllers\Admin\OrderController::class, 'updateOrderStatus']);
         Route::get('/view-order-invoice/{id}', [App\Http\Controllers\Admin\OrderController::class, 'viewOrderInvoice']);
         Route::get('/print-pdf-invoice/{id}', [App\Http\Controllers\Admin\OrderController::class, 'printPDFInvoice']);
+        //shipping-charges 
+        Route::get('/shipping-charges', [App\Http\Controllers\Admin\ShippingChargeController::class, 'shippingCharge']);
+        Route::post('/update-shipping-status', [App\Http\Controllers\Admin\ShippingChargeController::class, 'updateShippingChargeStatus']);
+        Route::match(['get','post'],'/edit-shipping-charges/{id}', [App\Http\Controllers\Admin\ShippingChargeController::class, 'editShippingCgarges']);
+
 
     }); 
 });  

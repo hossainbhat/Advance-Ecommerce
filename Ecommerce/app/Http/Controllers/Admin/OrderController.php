@@ -354,7 +354,7 @@ class OrderController extends Controller
                 <tr>
                   <td colspan="3"></td>
                   <td colspan="2">Shipping Charge</td>
-                  <td>Tk. 0</td>
+                  <td>Tk. '.$orderDetails['shipping_charge'].'</td>
                 </tr>
                 <tr>
                 <td colspan="3"></td>

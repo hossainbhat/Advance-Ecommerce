@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Models\ProductsAttribute;
+use App\Models\ShippingCharge;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Cart;
@@ -251,6 +252,8 @@ class ProductController extends Controller
           if($couponCount==0){
             $userCartItems = Cart::userCartItems();
             $totalCartItems = totalCartItems();
+            Session::forget('couponCode');
+            Session::forget('couponAmount');
             return response()->json([
               'status'=>false,
               'message'=>'This coupon is not valid', 
@@ -270,6 +273,14 @@ class ProductController extends Controller
           $current_date = date('Y-m-d');
           if($expiry_date < $current_date){
             $message = "This coupon is expired";
+          }
+
+          //single time use coupon check
+          if($couponDetails->coupon_type =="Single Time"){
+            $couponCount = Order::where(['coupon_code'=>$data['code'],'user_id'=>Auth::user()->id])->count();
+            if($couponCount >= 1){
+              $message ="This coupon code is already availed by you!";
+            }
           }
 
           //check category 
@@ -344,6 +355,29 @@ class ProductController extends Controller
       }
 
       public function checkout(Request $request){
+        $userCartItems = Cart::userCartItems();
+
+        if(count($userCartItems)==0){
+          $message ="Shopping cart is empty!. please add product to cseckout";
+          Session::put('error_message',$message);
+          return redirect('cart');
+        }
+
+        $total_price =0;
+        $total_weight =0;
+        foreach($userCartItems as $item){
+          $product_weight = $item['product']['product_weight'];
+          $total_weight = $total_weight + $product_weight;
+          $attrPrice = Product::getDiscountedAttrPrice($item['product_id'],$item['size']);
+          $total_price = $total_price + ( $attrPrice['final_price'] * $item['quantity']);
+
+        }
+        $deliveryAddress = DeliveryAddress::deliveryAddress();
+        // dd($deliveryAddress);die;
+        foreach($deliveryAddress as $key => $value){
+         $shippingCharges = ShippingCharge::getShippingCharges($total_weight,$value['country']);
+         $deliveryAddress[$key]['shipping_charges'] = $shippingCharges;
+        }
         if($request->isMethod('post')){
           $data = $request->all();
           // echo Session::get('grand_total');
@@ -367,6 +401,13 @@ class ProductController extends Controller
 
           $dalivaryAddress = DeliveryAddress::where('id',$data['address_id'])->first()->toArray();
           // dd($dalivaryAddress);die;
+          $shipping_charge = ShippingCharge::getShippingCharges($total_weight,$dalivaryAddress['country']);
+         
+          $grand_total = $total_price + $shipping_charge - Session::get('couponAmount');
+          // dd($grand_total);die;
+          //insert grand total 
+          Session::put('grand_total',$grand_total);
+
           DB::beginTransaction();
 
           $order = new Order;
@@ -379,13 +420,13 @@ class ProductController extends Controller
           $order->pincode = $dalivaryAddress['pincode'];
           $order->mobile = $dalivaryAddress['mobile'];
           $order->email = Auth::user()->email;
-          $order->shipping_charge = 0;
+          $order->shipping_charge = $shipping_charge;
           $order->coupon_code = Session::get('couponCode');
           $order->coupon_amount = Session::get('couponAmount');
           $order->order_status = "New";
           $order->payment_method =  $payment_method;
           $order->payment_getwaya = $data['payment_getwaya'];
-          $order->grand_total = Session::get('grand_total');
+          $order->grand_total = $grand_total;
           $order->save();
 
           //get last insert order id
@@ -407,6 +448,15 @@ class ProductController extends Controller
             $cartItem->product_price = $getDiscountedAttrPrice['final_price'];
             $cartItem->product_qty = $item['quantity'];
             $cartItem->save();
+
+            if($data['payment_getwaya']=='COD'){
+              //stock minus product
+              $getProductStock = ProductsAttribute::where(['product_id'=>$item['product_id'],'size'=>$item['size']])->first()->toArray();
+              $newStock = $getProductStock['stock'] - $item['quantity'];
+              ProductsAttribute::where(['product_id'=>$item['product_id'],'size'=>$item['size']])->update(['stock'=>$newStock]);
+              
+
+            }
           } 
          
           Session::put('order_id',$order_id);
@@ -439,15 +489,9 @@ class ProductController extends Controller
 
           echo "order plased"; die;
         }
-        $userCartItems = Cart::userCartItems();
-
-        if(count($userCartItems)==0){
-          $message ="Shopping cart is empty!. please add product to cseckout";
-          Session::put('error_message',$message);
-          return redirect('cart');
-        }
-        $deliveryAddress = DeliveryAddress::deliveryAddress();
-        return view("front.products.checkout")->with(compact('userCartItems','deliveryAddress'));
+       
+        // dd($deliveryAddress);die;
+        return view("front.products.checkout")->with(compact('userCartItems','deliveryAddress','total_price'));
       }
 
 

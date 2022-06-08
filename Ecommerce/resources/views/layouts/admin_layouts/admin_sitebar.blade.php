@@ -39,6 +39,8 @@
 						</li>
 						<li> <a href="{{url('admin/orders')}}"><i class="bx bx-right-arrow-alt"></i>Orders</a>
 						</li>
+						<li> <a href="{{url('admin/shipping-charges')}}"><i class="bx bx-right-arrow-alt"></i>Shipping Charge</a>
+						</li>
 
 
 					</ul>

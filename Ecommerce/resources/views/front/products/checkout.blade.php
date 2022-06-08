@@ -38,7 +38,7 @@ use App\Models\Product;
           <tr> 
               <td>
                   <div class="control-group" style="float:left; margin-right:5px; margin-top:-2px;">
-                      <input type="radio" id="address{{$address->id}}" name="address_id" value="{{$address->id}}">
+                      <input type="radio" id="address{{$address->id}}" name="address_id" value="{{$address->id}}" shipping_charges="{{$address['shipping_charges']}}" total_price="{{$total_price}}" coupon_amount="{{Session::get('couponAmount')}}">
                   </div>
                   <div class="control-group">
                       <label class="control-label">{{$address->name}},{{$address->address}},{{$address->city}},{{$address->state}},{{$address->country}},({{$address->mobile}})</label>
@@ -93,14 +93,18 @@ use App\Models\Product;
                 <td colspan="5" style="text-align:right">Coupon Discount:	</td>
                 <td class="couponAmount"> 
                   @if(Session::has('couponAmount'))
-                    ৳. {{Session::get('couponAmount')}}
+                    ৳. - {{Session::get('couponAmount')}}
                   @else 
                     ৳. 0
                   @endif 
                 </td>
             </tr>
             <tr>
-                <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (৳.{{$total_price}} - <span class="couponAmount">৳. @if(Session::get('couponAmount')){{{Session::get('couponAmount')}}} @else 0 @endif</span> ) =</strong></td>
+                <td colspan="5" style="text-align:right">Shipping Charges:	</td>
+                <td class="shipping_charges">  ৳. 0</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (৳.{{$total_price}} - <span class="couponAmount">৳. @if(Session::get('couponAmount')){{{Session::get('couponAmount')}}} @else ৳. 0 @endif</span> + <span class="shipping_charges">৳. 0</span>)  =</strong></td>
                 <td class="label label-important" style="display:block"> <strong class="grand_total"> ৳.{{ $grand_total = $total_price - Session::get('couponAmount')}} <?php Session::put('grand_total',$grand_total); ?></strong></td>
                 
             </tr>

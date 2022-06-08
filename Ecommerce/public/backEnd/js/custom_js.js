@@ -64,6 +64,28 @@ $(document).ready(function(){
 				}
 			});
 		});
+		// //shipping charge status active or inactive
+		$(".updateShippingChargeStatus").click(function(){
+			var status = $(this).text();
+			var shipping_id = $(this).attr("shipping_id");
+	
+			$.ajax({
+				type:"post",
+				url:"/admin/update-shipping-status",
+				data:{status:status,shipping_id:shipping_id},
+				success:function(resp){
+					// alert(resp['status']);
+					// alert(resp['shipping_id']);
+					if (resp['status']==0) {
+						$("#shipping-"+shipping_id).html("<a class='updateShippingChargeStatus' href='javascript:void(0)'>Inactive</a>");
+					}else if(resp['status']==1){
+						$("#shipping-"+shipping_id).html("<a class='updateShippingChargeStatus'   href='javascript:void(0)'>Active</a>");
+					}
+				},error:function(){
+					alert("Error");
+				}
+			});
+		});
 			// //sections status active or inactive
 			$(".updateCouponStatus").click(function(){
 				var status = $(this).text();

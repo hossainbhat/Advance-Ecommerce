@@ -18,7 +18,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
 	<link href="{{asset('backEnd/css/app.css')}}" rel="stylesheet">
 	<link href="{{asset('backEnd/css/icons.css')}}" rel="stylesheet">
-	<title>Rocker - Bootstrap 5 Admin Dashboard Template</title>
+	<title>Online StoreBD | Login</title>
 </head>
 
 <body class="">
@@ -29,7 +29,7 @@
 				<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
 					<div class="col mx-auto">
 						<div class="mb-4 text-center">
-							<img src="{{asset('backEnd/images/logo-img.png')}}" width="180" alt="" />
+							<img src="{{asset('front/images/logo_email.png')}}" width="180" alt="" />
 						</div>
 						<div class="card shadow-none">
 							<div class="card-body">
@@ -38,14 +38,7 @@
 										<h3 class="">Sign in</h3>
 									</div>
 									<div class="form-body">
-										@if(Session::has('error_message'))
-										<div class="alert alert-danger alert-dismissible fade show" role="alert">
-											{{Session::get('error_message')}}
-											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										@endif
+									
 
 										@if ($errors->any())
 											<div class="alert alert-danger">
@@ -56,7 +49,13 @@
 												</ul>
 											</div>
 										@endif
-										<form class="row g-3" action="{{url('/admin')}}" method="post">
+										@if(Session::has('error_message'))
+											<div class="alert alert-danger border-0 bg-danger alert-dismissible fade show">
+												<div class="text-white">{{Session::get('error_message')}}</div>
+												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+											</div>
+										@endif
+										<form class="row g-3" action="{{url('/admin')}}" method="post" autocomplete="off">
 										@csrf
 											<div class="col-12">
 												<label for="email" class="form-label">Email Address</label>
@@ -70,8 +69,8 @@
 											</div>
 											<div class="col-md-6">
 												<div class="form-check form-switch">
-													<input class="form-check-input" name="remember" type="checkbox" id="flexSwitchCheckChecked" checked>
-													<label class="form-check-label" for="flexSwitchCheckChecked">Remember Me</label>
+													<input class="form-check-input" name="remember_token" type="checkbox" id="remember_token" {{ old('remember_token') ? 'checked' : '' }}>
+													<label class="form-check-label" for="remember_token">Remember Me</label>
 												</div>
 											</div>
 											<div class="col-12">

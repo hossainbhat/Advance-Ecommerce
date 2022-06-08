@@ -134,7 +134,7 @@
     								<td class="no-line"></td>
     								<td class="no-line"></td>
     								<td class="no-line text-center"><strong>Shipping</strong></td>
-    								<td class="no-line text-right">Tk. 0</td>
+    								<td class="no-line text-right">Tk.{{$orderDetails['shipping_charge']}}</td>
     							</tr>
                                 @if($orderDetails['coupon_amount'] >0)
                                 <tr>

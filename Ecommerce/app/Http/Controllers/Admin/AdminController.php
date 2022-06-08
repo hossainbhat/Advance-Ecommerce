@@ -17,7 +17,7 @@ class AdminController extends Controller
         //echo $password = Hash::make('123456');die;
     	if ($request->isMethod('post')) {
     		$data = $request->all();
-
+            // echo "<pre>"; print_r($data); die;
     		$rulse = [
     			'email' => 'required|email|max:255',
 		        'password' => 'required',

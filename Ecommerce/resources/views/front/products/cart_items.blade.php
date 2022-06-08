@@ -52,6 +52,7 @@ use App\Models\Product;
                 @endif 
               </td>
           </tr>
+        
           <tr>
               <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (৳.{{$total_price}} - <span class="couponAmount">৳.0</span> ) =</strong></td>
               <td class="label label-important" style="display:block"> <strong class="grand_total"> ৳.{{$total_price - Session::get('couponAmount')}} </strong></td>
@@ -76,6 +77,6 @@ use App\Models\Product;
       </td>
     </tr>
 
-
+  
   </tbody>
   </table>
