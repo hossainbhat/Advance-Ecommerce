@@ -11,7 +11,8 @@
 			</div>
 			<div class="span3">
 				<h5>INFORMATION</h5>
-				<a href="contact.html">CONTACT</a>
+				<a href="{{url('contact')}}">CONTACT</a>
+				<a href="{{url('avout')}}">ABOUT US</a>
 				<a href="tac.html">TERMS AND CONDITIONS</a>
 				<a href="faq.html">FAQ</a>
 			</div>

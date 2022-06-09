@@ -92,6 +92,7 @@ use App\Models\CmsPage;
 Route::namespace('Front')->group(function(){
     
     Route::get('/', [App\Http\Controllers\Front\IndexController::class, 'index']);
+    Route::match(['get','post'],'contact', [App\Http\Controllers\Front\CmsController::class, 'contact']);
 
     $catUrls = Category::select('url')->where('status',1)->get()->pluck('url')->toArray();
     // echo "<pre>"; print_r($catUrls); die;
@@ -131,8 +132,14 @@ Route::namespace('Front')->group(function(){
         Route::match(['get','post'],'/add-edit-dalivary-address/{id?}', [App\Http\Controllers\Front\ProductController::class, 'addEditDalivaryAddress']);
         Route::get('/delete-dalivary-address/{id}', [App\Http\Controllers\Front\ProductController::class, 'deleteDalivaryAddress']);
         Route::get('/thanks', [App\Http\Controllers\Front\ProductController::class, 'thanks']);
+        //wish list
+        Route::post('/update-wishlist', [App\Http\Controllers\Front\ProductController::class, 'Wishlist']);
+        Route::get('/wishlist-item', [App\Http\Controllers\Front\ProductController::class, 'wishListItem']);
+        Route::post('/delete-wishlist-item', [App\Http\Controllers\Front\ProductController::class, 'deleteWishListItem']);
+
         Route::get('/orders', [App\Http\Controllers\Front\OrderController::class, 'orders']);
         Route::get('/orders/{id}', [App\Http\Controllers\Front\OrderController::class, 'orderDetails']);
+
 
     });
 
@@ -153,6 +160,7 @@ Route::namespace('Front')->group(function(){
     Route::post('add-to-cart', [App\Http\Controllers\Front\ProductController::class, 'addtocart']);
     //get product price
     Route::post('/get-product-price', [App\Http\Controllers\Front\ProductController::class, 'getProductPrice']);
+    //wishlist
 
 
 

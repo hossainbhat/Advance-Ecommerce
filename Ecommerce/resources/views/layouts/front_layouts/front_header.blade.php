@@ -44,16 +44,18 @@
 			            </li>
 			            @endif
 		            @endforeach
-		            <li><a href="{{url('about')}}">About</a></li>
-					<li><a href="#">Contact</a></li>
+		           
+					
 		          </ul>
 		          <form class="navbar-search pull-left" action="#">
 		            <input type="text" class="search-query span2" placeholder="Search"/>
 		          </form>
 		          <ul class="nav pull-right">
-				  
+					 <li><a href="{{url('about')}}">About</a></li>
+				  <li><a href="{{url('contact')}}">Contact</a></li>
 				  <li class="divider-vertical"></li>
 					@if(Auth::check())
+						<li><a href="{{url('/wishlist-item')}}">Wishlist</a></li>
 						<li><a href="{{url('/account')}}">My Account</a></li>
 						<li><a href="{{url('logout')}}">Logout</a></li>
 					@else

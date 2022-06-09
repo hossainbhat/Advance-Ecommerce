@@ -394,4 +394,47 @@ $(document).on('click','.btnItemDelete',function(){
 
      });
 
+     $(".userLogin").on('click',function(){
+        alert("Login to Add Products in your Wishlist");
+     });
+    //wish list 
+     $(".updateWishlist").on('click',function(){
+        var product_id = $(this).data('productid');
+        $.ajax({
+            type:"post",
+            url:"/update-wishlist",
+            data:{"product_id":product_id},
+            success:function(resp){
+                if(resp.action=='add'){
+                    $('button[data-productid='+product_id+']').html('Wish List <i class="icon-heart"></i>');
+                    alert("product add from Wishlist");
+                }else if(resp.action=='remove'){
+                    $('button[data-productid='+product_id+']').html('Wish List <i class="icon-heart-empty"></i>');
+                    alert("product remove from Wishlist");
+                }
+            },error:function(){
+                alert("Error");
+            }
+        });
+     });
+
+
+// wishlistItemDelete
+$(document).on('click','.wishlistItemDelete',function(){
+    var wishlistid = $(this).data('wishlistid');
+    // alert(wishlist);
+    $.ajax({
+        type:"post",
+        url:"/delete-wishlist-item",
+        data:{"wishlistid":wishlistid},
+        success:function(resp){
+            $('.totalWishlisttems').html(resp.totalWishlisttems);
+            $("#appentWishlistItems").html(resp.view);
+        },error:function(){
+            alert("Error");
+        }
+    });
+});
+
+
 });

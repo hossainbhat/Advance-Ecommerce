@@ -16,6 +16,7 @@ use App\Models\Country;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Sms;
+use App\Models\Wishlist;
 use App\Models\OrdersProduct;
 use App\Models\DeliveryAddress;
 use Illuminate\Support\Facades\Session;
@@ -184,6 +185,29 @@ class ProductController extends Controller
         $userCartItems = Cart::userCartItems();
         // echo "<pre>"; print_r($userCartItems); die;
         return view('front.products.cart_view')->with(compact('userCartItems'));
+      }
+
+      public function wishListItem(){
+        $userWishlistItems = Wishlist::userWishlistItems();
+        // dd($userWishlistItems);die;
+        $meta_title ="Wishlist - Ecommerce Webbsite";
+        $meta_description = "View wishlist of Ecommerce Website";
+        $meta_keyword = "wish list, Ecommerce Website ";
+        return view('front.products.wish_list')->with(compact('userWishlistItems','meta_title','meta_description','meta_keyword'));
+      }
+
+      public function deleteWishListItem(Request $request){
+        if($request->ajax()){
+          $data = $request->all();
+          // echo "<pre>"; print_r($data); die;
+          Wishlist::where('id',$data['wishlistid'])->delete();
+          $userWishlistItems = Wishlist::userWishlistItems();
+          $totalWishlisttems = totalWishlisttems();
+          return response()->json([
+            'totalWishlisttems' => $totalWishlisttems,
+            'view'=>(String)View::make('front.products.wishlist_item')->with(compact('userWishlistItems'))
+          ]);
+        }
       }
 
       public function updateCartItemQty(Request $request){
@@ -575,5 +599,24 @@ class ProductController extends Controller
         $message ="Deleviry address has been deleted successfully";
         Session::put('success_message',$message);
         return redirect()->back();
+      }
+
+      public function Wishlist(Request $request){
+        if($request->ajax()){
+          $data = $request->all();
+          // echo "<pre>"; print_r($data); die;
+          $countWishlist = Wishlist::countWishlist($data['product_id']);
+          if($countWishlist==0){
+            $wishlist = new Wishlist;
+            $wishlist->user_id = Auth::user()->id;
+            $wishlist->product_id = $data['product_id'];
+            $wishlist->save();
+            return response()->json(['status'=>true,'action'=>'add']);
+          }else{
+            Wishlist::where(['user_id'=>Auth::user()->id,'product_id'=>$data['product_id']])->delete();
+            return response()->json(['status'=>true,'action'=>'remove']);
+
+          }
+        }
       }
 }

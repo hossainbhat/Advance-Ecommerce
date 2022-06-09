@@ -1,5 +1,6 @@
 <?php 
 use App\Models\Product; 
+use App\Models\Wishlist; 
 ?>
 @extends("layouts.front_layouts.front_layout")
 @section("content")
@@ -80,8 +81,16 @@ use App\Models\Product;
               <option value="{{$attribute['size']}}">{{$attribute['size']}}</option>
               @endforeach
             </select>
-            <input name="quantity" type="number" min="1" class="span1" placeholder="Qty."/ required>
-            <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
+            <input name="quantity" type="number" min="1" class="span1" placeholder="Qty."/ required> 
+            <div>&nbsp;</div>
+            <button type="submit" class="btn btn-large btn-primary"> Add to cart <i class=" icon-shopping-cart"></i></button>
+            @php $countWishlist = 0 @endphp
+            @if(Auth::check())
+              @php $countWishlist   = Wishlist::countWishlist($productDetails['id']); @endphp 
+            <button type="button" class="btn btn-large btn-primary updateWishlist" data-productid="{{$productDetails['id']}}"> Wish List <i class="@if($countWishlist>0) icon-heart @else icon-heart-empty @endif"></i></button>
+            @else
+            <button type="button" class="btn btn-large btn-primary userLogin"> Wish List <i class=" icon-heart-empty"></i></button>
+            @endif 
           </div>
         </div>
       </form>
