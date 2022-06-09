@@ -24,6 +24,7 @@
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset('front/images/ico/apple-touch-icon-72-precomposed.png')}}">
 	<link rel="apple-touch-icon-precomposed" href="{{asset('front/images/ico/apple-touch-icon-57-precomposed.png')}}">
 	<style type="text/css" id="enject"></style>
+	<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=621df2ce22498b0019f651c1&product=sticky-share-buttons' async='async'></script>
 	@yield("front_css")
 </head>
 <body>
@@ -53,5 +54,18 @@
 <script src="{{asset('front/js/front_custom.js')}}"></script>
 <script src="{{asset('front/js/jquery.validate.js')}}"></script>
 @yield("front_js")
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/62a0be07b0d10b6f3e76573a/1g51ucjmt';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 </html>

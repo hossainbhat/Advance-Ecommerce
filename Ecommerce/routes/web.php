@@ -73,6 +73,11 @@ Route::prefix('/admin')->namespace('Admin')->group(function(){
         Route::get('/shipping-charges', [App\Http\Controllers\Admin\ShippingChargeController::class, 'shippingCharge']);
         Route::post('/update-shipping-status', [App\Http\Controllers\Admin\ShippingChargeController::class, 'updateShippingChargeStatus']);
         Route::match(['get','post'],'/edit-shipping-charges/{id}', [App\Http\Controllers\Admin\ShippingChargeController::class, 'editShippingCgarges']);
+        //cms page
+        Route::get('/cms-pages', [App\Http\Controllers\Admin\CmsController::class, 'cmsPages']);
+        Route::post('/update-cms-status', [App\Http\Controllers\Admin\CmsController::class, 'updateCmsStatus']);
+        Route::match(['get','post'],'/add-edit-cms/{id?}', [App\Http\Controllers\Admin\CmsController::class, 'addEditCms']);
+        Route::get('/delete-cms/{id}', [App\Http\Controllers\Admin\CmsController::class, 'deleteCms']);
 
 
     }); 
@@ -82,16 +87,25 @@ Route::prefix('/admin')->namespace('Admin')->group(function(){
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 use App\Models\Category;
+use App\Models\CmsPage;
 
 Route::namespace('Front')->group(function(){
     
     Route::get('/', [App\Http\Controllers\Front\IndexController::class, 'index']);
+
     $catUrls = Category::select('url')->where('status',1)->get()->pluck('url')->toArray();
     // echo "<pre>"; print_r($catUrls); die;
     foreach ($catUrls as $url) {
         Route::get('/'.$url, [App\Http\Controllers\Front\ProductController::class, 'listing']);
 
     }
+    $cmsUrl = CmsPage::select('url')->where('status',1)->get()->pluck('url')->toArray();
+    // echo "<pre>"; print_r($cmsUrl); die;
+    foreach ($cmsUrl as $url) {
+        Route::get('/'.$url, [App\Http\Controllers\Front\CmsController::class, 'cmspage']);
+
+    }
+
     //login register 
     Route::get('login-register', [App\Http\Controllers\Front\UserController::class, 'LoginRegister'])->name('login');
     // Route::get('login-register',['as' =>'login', 'uses'=> [App\Http\Controllers\Front\UserController::class, 'LoginRegister']]);

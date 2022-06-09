@@ -5,7 +5,9 @@
 				<h5>ACCOUNT</h5>
 				<a href="{{url('/account')}}">YOUR ACCOUNT</a>
 				<a href="login.html">PERSONAL INFORMATION</a>
-				<a href="login.html">ORDER HISTORY</a>
+				@if(Auth::check())
+				<a href="{{url('orders')}}">ORDER HISTORY</a>
+				@endif
 			</div>
 			<div class="span3">
 				<h5>INFORMATION</h5>

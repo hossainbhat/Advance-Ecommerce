@@ -44,7 +44,7 @@
 			            </li>
 			            @endif
 		            @endforeach
-		            <li><a href="#">About</a></li>
+		            <li><a href="{{url('about')}}">About</a></li>
 					<li><a href="#">Contact</a></li>
 		          </ul>
 		          <form class="navbar-search pull-left" action="#">

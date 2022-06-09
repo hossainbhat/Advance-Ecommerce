@@ -86,6 +86,29 @@ $(document).ready(function(){
 				}
 			});
 		});
+
+		//cms page
+		$(".updateCmsStatus").click(function(){
+			var status = $(this).text();
+			var cms_id = $(this).attr("cms_id");
+	
+			$.ajax({
+				type:"post",
+				url:"/admin/update-cms-status",
+				data:{status:status,cms_id:cms_id},
+				success:function(resp){
+					// alert(resp['status']);
+					// alert(resp['cms_id']);
+					if (resp['status']==0) {
+						$("#cms-"+cms_id).html("<a class='updateCmsStatus' href='javascript:void(0)'>Inactive</a>");
+					}else if(resp['status']==1){
+						$("#cms-"+cms_id).html("<a class='updateCmsStatus'   href='javascript:void(0)'>Active</a>");
+					}
+				},error:function(){
+					alert("Error");
+				}
+			});
+		});
 			// //sections status active or inactive
 			$(".updateCouponStatus").click(function(){
 				var status = $(this).text();

@@ -36,12 +36,7 @@ use App\Models\Product;
 
       <div class="btn-toolbar">
         <div class="btn-group">
-          <span class="btn"><i class="fas fa-envelope"></i></span>
-          <span class="btn" ><i class="fas fa-print"></i></span>
-          <span class="btn" ><i class="fas fa-search"></i></span>
-          <span class="btn" ><i class="fas fa-star"></i></span>
-          <span class="btn" ><i class="fas fa-thumbs-up"></i></span>
-          <span class="btn" ><i class="fas fa-thumbs-down"></i></span>
+        <div class="sharethis-inline-share-buttons"></div>
         </div>
       </div>
     </div>
