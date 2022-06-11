@@ -1,5 +1,6 @@
 
 @extends("layouts.front_layouts.front_layout")
+@section('title','Contact Us')
 @section("content")
 <div id="mainBody">
 <div class="container">

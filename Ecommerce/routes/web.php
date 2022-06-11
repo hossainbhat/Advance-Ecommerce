@@ -78,7 +78,18 @@ Route::prefix('/admin')->namespace('Admin')->group(function(){
         Route::post('/update-cms-status', [App\Http\Controllers\Admin\CmsController::class, 'updateCmsStatus']);
         Route::match(['get','post'],'/add-edit-cms/{id?}', [App\Http\Controllers\Admin\CmsController::class, 'addEditCms']);
         Route::get('/delete-cms/{id}', [App\Http\Controllers\Admin\CmsController::class, 'deleteCms']);
+        //user 
+        Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'Users']);
+        Route::get('/admins', [App\Http\Controllers\Admin\UserController::class, 'Admins']);
 
+        Route::post('/update-admin-status', [App\Http\Controllers\Admin\UserController::class, 'updateAdminStatus']);
+        Route::post('/update-user-status', [App\Http\Controllers\Admin\UserController::class, 'updateUserStatus']);
+        //site settings
+        Route::match(['get','post'],'/site-settings',  [App\Http\Controllers\Admin\SiteSettingController::class, 'SiteSettings']);
+
+        //ratings
+        Route::get('/ratings', [App\Http\Controllers\Admin\RatingController::class, 'Ratings']);
+        Route::post('/update-rating-status', [App\Http\Controllers\Admin\RatingController::class, 'updateRatingStatus']);
 
     }); 
 });  
@@ -120,6 +131,10 @@ Route::namespace('Front')->group(function(){
     Route::match(['get','post'],'/confirm/{code}', [App\Http\Controllers\Front\UserController::class, 'confirmAccount']);
 
     Route::match(['get','post'],'/forgot-password', [App\Http\Controllers\Front\UserController::class, 'UserforgotPassword']);
+    //search product
+    Route::get('/search-products', [App\Http\Controllers\Front\ProductController::class, 'listing']);
+    //rating
+    Route::match(['get','post'],'/add-rating', [App\Http\Controllers\Front\RatingController::class, 'addRating']);
 
     Route::group(['middleware' => ['auth']], function () {
 

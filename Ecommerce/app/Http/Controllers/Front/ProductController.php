@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Sms;
 use App\Models\Wishlist;
+use App\Models\Rating;
 use App\Models\OrdersProduct;
 use App\Models\DeliveryAddress;
 use Illuminate\Support\Facades\Session;
@@ -84,10 +85,25 @@ class ProductController extends Controller
      }else{
          $url = Route::getFacadeRoot()->current()->uri();
          $categoryCount = Category::where(['url'=>$url,'status'=>1])->count();
-         if ($categoryCount > 0) {
+        //search
+        if(isset($_REQUEST['search']) && !empty($_REQUEST['search'])){
+          $search_product = $_REQUEST['search'];
+          $categoryDetails['breadcrumbs'] =  $search_product;
+          $categoryDetails['categoryDetails']['name'] = $search_product;
+          $categoryDetails['categoryDetails']['description'] = "Search Result For ".$search_product;
+          $categoryProduct = Product::with('brand')->where(function($query)use($search_product){
+            $query->where('product_name','like','%'.$search_product.'%')
+            ->orWhere('product_code','like','%'.$search_product.'%')
+            ->orWhere('product_color','like','%'.$search_product.'%') 
+            ->orWhere('description','like','%'.$search_product.'%');
+          })->where('status',1);
+          $categoryProduct = $categoryProduct->get();
+          $page_name = "Search Result :";
+          return view('front.products.listing')->with(compact('categoryDetails','categoryProduct','page_name'));
+        }else if($categoryCount > 0) {
            //echo "category exist"; die;
            $categoryDetails = Category::categoryDetails($url);
-           //echo "<pre>"; print_r($categoryDetails); die;
+          //  echo "<pre>"; print_r($categoryDetails); die;
            $categoryProduct = Product::with('brand')->whereIn('category_id',$categoryDetails['catIds'])->where('status',1);
              //echo "<pre>"; print_r($categoryDetails);
              //echo "<pre>"; print_r($categoryProduct); die;
@@ -109,12 +125,28 @@ class ProductController extends Controller
      }
 
      public function product($id=null){
+     
       $productDetails = Product::with(['category','brand','ProductImage','attributes'=>function($query){$query->where('status',1);}])->find($id)->toArray();
       // dd($productDetails); die;
       $total_stock = ProductsAttribute::where('product_id',$id)->sum('stock');
       $relatedProducts = Product::where('category_id',$productDetails['category']['id'])->where('id','!=',$id)->limit(3)->inRandomOrder()->get()->toArray();
-      // dd($relatedProducts); die;
-      return view('front.products.detail')->with(compact('productDetails','total_stock','relatedProducts'));
+      
+      //get rating 
+      $ratings = Rating::with('user')->where('status',1)->where('product_id',$id)->orderBy('id','DESC')->get()->toArray();
+
+      $ratingSum = Rating::where('status',1)->where('product_id',$id)->sum('rating');
+      $ratingCount = Rating::where('status',1)->where('product_id',$id)->count();
+
+
+      if($ratingCount>0){
+        $avagRating = round($ratingSum/$ratingCount,2);
+        $avagStarRating = round($ratingSum / $ratingCount);
+      }else{
+        $avagRating=0;
+        $avagStarRating=0;
+      }
+      // echo "<pre>"; print_r($ratings); die;
+      return view('front.products.detail')->with(compact('avagRating','avagStarRating','ratings','productDetails','total_stock','relatedProducts'));
       }
 
       public function getProductPrice(Request $request){

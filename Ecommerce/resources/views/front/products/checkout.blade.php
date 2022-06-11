@@ -2,6 +2,7 @@
 use App\Models\Product; 
 ?>
 @extends("layouts.front_layouts.front_layout")
+@section('title','Checkout')
 @section("content")
 <div class="span9">
   <ul class="breadcrumb">
@@ -104,7 +105,7 @@ use App\Models\Product;
                 <td class="shipping_charges">  ৳. 0</td>
             </tr>
             <tr>
-                <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (৳.{{$total_price}} - <span class="couponAmount">৳. @if(Session::get('couponAmount')){{{Session::get('couponAmount')}}} @else ৳. 0 @endif</span> + <span class="shipping_charges">৳. 0</span>)  =</strong></td>
+                <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (৳.{{$total_price}} - <span class="couponAmount"> @if(Session::get('couponAmount')){{{Session::get('couponAmount')}}} @else ৳. 0 @endif</span> + <span class="shipping_charges"></span>)  =</strong></td>
                 <td class="label label-important" style="display:block"> <strong class="grand_total"> ৳.{{ $grand_total = $total_price - Session::get('couponAmount')}} <?php Session::put('grand_total',$grand_total); ?></strong></td>
                 
             </tr>

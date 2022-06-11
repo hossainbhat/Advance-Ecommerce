@@ -1,5 +1,6 @@
 
 @extends("layouts.front_layouts.front_layout")
+@section('title','Cart Item')
 @section("content")
 <div class="span9">
   <ul class="breadcrumb">

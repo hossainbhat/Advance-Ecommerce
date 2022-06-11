@@ -1,4 +1,5 @@
 @extends("layouts.front_layouts.front_layout")
+@section('title',$title)
 @section('front_css')
 <style>
 form.cmxform label.error, label.error {

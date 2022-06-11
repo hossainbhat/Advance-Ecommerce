@@ -3,6 +3,56 @@ use App\Models\Product;
 use App\Models\Wishlist; 
 ?>
 @extends("layouts.front_layouts.front_layout")
+@section('title','Product Details')
+@section('front_css')
+<style>
+  /* component */
+
+.star-rating {
+  border:solid 1px #ccc;
+  display:flex;
+  flex-direction: row-reverse;
+  font-size:1.7em;
+  justify-content:space-around;
+  padding:0.2em;
+  text-align:center;
+  width:7em;
+}
+
+.star-rating input {
+  display:none;
+}
+
+.star-rating label {
+  color:#ccc;
+  cursor:pointer;
+  font-size:25px;
+}
+
+.star-rating :checked ~ label {
+  color:#f90;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color:#fc0;
+}
+
+/* explanation */
+
+article {
+  background-color:#ffe;
+  box-shadow:0 0 1em 1px rgba(0,0,0,.25);
+  color:#006;
+  font-family:cursive;
+  font-style:italic;
+  margin:4em;
+  max-width:30em;
+  padding:2em;
+}
+</style>
+
+@endsection
 @section("content")
 
 <div class="span9">
@@ -60,6 +110,16 @@ use App\Models\Wishlist;
     @endif
       <h3>{{$productDetails['product_name']}}</h3>
       <small>- {{$productDetails['brand']['name']}}</small>
+      @if($avagStarRating>0)
+      <div>
+          <?php 
+          
+            $star =1;
+            while($star<=$avagStarRating){ ?>
+              <span>&#9733;</span>
+          <?php $star ++; } ?> ({{$avagRating}}) 
+      </div>
+      @endif 
       <hr class="soft"/>
       <small>{{$total_stock}} items in stock</small>
       <form action="{{url('add-to-cart')}}" method="post" class="form-horizontal qtyFrm">
@@ -109,6 +169,7 @@ use App\Models\Wishlist;
       <ul id="productDetail" class="nav nav-tabs">
         <li class="active"><a href="#home" data-toggle="tab">Product Details</a></li>
         <li><a href="#profile" data-toggle="tab">Related Products</a></li>
+        <li><a href="#review" data-toggle="tab">Review & Rating</a></li>
       </ul>
       <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade active in" id="home">
@@ -142,82 +203,142 @@ use App\Models\Wishlist;
 
         </div>
         <div class="tab-pane fade" id="profile">
-          <div id="myTab" class="pull-right">
-            <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="fas fa-th-list"></i></span></a>
-            <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="fas fa-th-large"></i></span></a>
-          </div>
-          <br class="clr"/>
-          <hr class="soft"/>
-          <div class="tab-content">
-            <div class="tab-pane" id="listView">
-              @foreach($relatedProducts as $product)
-                <div class="row">
-                  <div class="span2">
-                    <?php $product_image_path = "backEnd/images/products/small/".$product['main_image']; ?>
-                    @if(!empty($product['main_image']) && file_exists($product_image_path))
-                    <img src="{{asset($product_image_path)}}" alt="">
-                    @else
-                    <img src="{{asset('backEnd/images/products/small/no-image.png')}}" alt="">
-                    @endif
-                  </div>
-                  <div class="span4">
-                    <h3>{{$product['product_name']}}</h3>
-                    <hr class="soft"/>
-                    <h5>{{$product['product_code']}} | {{$product['product_color']}} </h5>
-                    <p>
-                      {{$product['description']}}
-                    </p>
-                    <a class="btn btn-small pull-right" href="{{url($product['id'])}}">View Details</a>
-                    <br class="clr"/>
-                  </div>
-                  <div class="span3 alignR">
-                    <form class="form-horizontal qtyFrm">
-                      <h3> ৳.{{$product['product_price']}}</h3>
-                      <label class="checkbox">
-                        <input type="checkbox">  Adds product to compair
-                      </label><br/>
-                      <div class="btn-group">
-                      <a href="#" class="btn btn-large btn-primary"> Add to <i class="fas fa-cart-plus"></i></a>
-                        <a href="{{url($product['id'])}}" class="btn btn-large"><i class="fas fa-search-plus"></i></a>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <hr class="soft"/>
-              @endforeach
+            <div id="myTab" class="pull-right">
+              <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="fas fa-th-list"></i></span></a>
+              <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="fas fa-th-large"></i></span></a>
             </div>
-
-
-            <div class="tab-pane active" id="blockView">
-              <ul class="thumbnails">
-                @foreach($relatedProducts as $reproduct)
-                  <li class="span3">
-                  <div class="thumbnail">
-                    <a href="{{url($reproduct['id'])}}">
-                        <?php $product_image_path = "backEnd/images/products/small/".$reproduct['main_image']; ?>
-                        @if(!empty($reproduct['main_image']) && file_exists($product_image_path))
-                        <img src="{{asset($product_image_path)}}" alt="">
-                        @else
-                        <img src="{{asset('backEnd/images/products/small/no-image.png')}}" alt="">
-                        @endif
-                    </a>
-                    <div class="caption">
-                      <h5>{{$reproduct['product_name']}}</h5>
+            <br class="clr"/>
+            <hr class="soft"/>
+            <div class="tab-content">
+              <div class="tab-pane" id="listView">
+                @foreach($relatedProducts as $product)
+                  <div class="row">
+                    <div class="span2">
+                      <?php $product_image_path = "backEnd/images/products/small/".$product['main_image']; ?>
+                      @if(!empty($product['main_image']) && file_exists($product_image_path))
+                      <img src="{{asset($product_image_path)}}" alt="">
+                      @else
+                      <img src="{{asset('backEnd/images/products/small/no-image.png')}}" alt="">
+                      @endif
+                    </div>
+                    <div class="span4">
+                      <h3>{{$product['product_name']}}</h3>
+                      <hr class="soft"/>
+                      <h5>{{$product['product_code']}} | {{$product['product_color']}} </h5>
                       <p>
-                        {{$reproduct['product_code']}} | {{$product['product_color']}}
+                        {{$product['description']}}
                       </p>
-                      <h4 style="text-align:center"><a class="btn" href="{{url($reproduct['id'])}}"> <i class="fas fa-search-plus"></i></a> <a class="btn" href="#">Add to <i class="fas fa-cart-plus"></i></a> <a class="btn btn-primary" href="#">৳.{{$product['product_price']}}</a></h4>
+                      <a class="btn btn-small pull-right" href="{{url($product['id'])}}">View Details</a>
+                      <br class="clr"/>
+                    </div>
+                    <div class="span3 alignR">
+                      <form class="form-horizontal qtyFrm">
+                        <h3> ৳.{{$product['product_price']}}</h3>
+                        <label class="checkbox">
+                          <input type="checkbox">  Adds product to compair
+                        </label><br/>
+                        <div class="btn-group">
+                        <a href="#" class="btn btn-large btn-primary"> Add to <i class="fas fa-cart-plus"></i></a>
+                          <a href="{{url($product['id'])}}" class="btn btn-large"><i class="fas fa-search-plus"></i></a>
+                        </div>
+                      </form>
                     </div>
                   </div>
-                </li>
+                  <hr class="soft"/>
                 @endforeach
-              </ul>
-              <hr class="soft"/>
+              </div>
+
+
+              <div class="tab-pane active" id="blockView">
+                <ul class="thumbnails">
+                  @foreach($relatedProducts as $reproduct)
+                    <li class="span3">
+                    <div class="thumbnail">
+                      <a href="{{url($reproduct['id'])}}">
+                          <?php $product_image_path = "backEnd/images/products/small/".$reproduct['main_image']; ?>
+                          @if(!empty($reproduct['main_image']) && file_exists($product_image_path))
+                          <img src="{{asset($product_image_path)}}" alt="">
+                          @else
+                          <img src="{{asset('backEnd/images/products/small/no-image.png')}}" alt="">
+                          @endif
+                      </a>
+                      <div class="caption">
+                        <h5>{{$reproduct['product_name']}}</h5>
+                        <p>
+                          {{$reproduct['product_code']}} | {{$product['product_color']}}
+                        </p>
+                        <h4 style="text-align:center"><a class="btn" href="{{url($reproduct['id'])}}"> <i class="fas fa-search-plus"></i></a> <a class="btn" href="#">Add to <i class="fas fa-cart-plus"></i></a> <a class="btn btn-primary" href="#">৳.{{$product['product_price']}}</a></h4>
+                      </div>
+                    </div>
+                  </li>
+                  @endforeach
+                </ul>
+                <hr class="soft"/>
+              </div>
+            </div>
+            <br class="clr">
+        </div>
+        <div class="tab-pane fade" id="review">
+            <div class="row">
+              <div class="span4">
+                <h3>Write Review</h3>
+                <form action="{{url('add-rating')}}" method="post">
+                  @csrf 
+                  <input type="hidden" name="product_id" value="{{$productDetails['id']}}">
+                  <div class="star-rating">
+                    <input type="radio" id="5-stars" name="rating" value="5" />
+                    <label for="5-stars" class="star">&#9733;</label>
+                    <input type="radio" id="4-stars" name="rating" value="4" />
+                    <label for="4-stars" class="star">&#9733;</label>
+                    <input type="radio" id="3-stars" name="rating" value="3" />
+                    <label for="3-stars" class="star">&#9733;</label>
+                    <input type="radio" id="2-stars" name="rating" value="2" />
+                    <label for="2-stars" class="star">&#9733;</label>
+                    <input type="radio" id="1-star" name="rating" value="1" />
+                    <label for="1-star" class="star">&#9733;</label>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="">Your Review</label>
+                    <textarea name="review" required="" style="width:300px; height:50px;"></textarea>
+                  </div>
+                  <div>&nbsp;</div>
+                  <div class="form-group">
+                    <input class="btn btn-md" type="submit" value="submit">
+                  </div>
+                </form>
+              </div>
+              <div class="span4">
+                @if(count($ratings)>0)
+                  @foreach($ratings as $rating)
+                    <div>
+                   
+                      <p>
+                       
+                        <?php 
+                        $count =1;
+                        while($count<=$rating['rating']){ ?>
+                          <span>&#9733;</span>
+                        <?php $count ++; } ?>
+                      </p>
+                     
+                      <p>{{$rating['review']}}</p>
+                      <p>By :{{$rating['user']['name']}}</p>
+                      <p>{{date('d-m-Y', strtotime($rating['created_at']))}}</p>
+                    </div>
+                  @endforeach
+                @else 
+                    <p>Review are not abailable for this product!</b>
+                @endif 
+              </div>
             </div>
           </div>
-          <br class="clr">
-        </div>
+         
       </div>
     </div>
   </div>
 @endsection
+@section("front_js")
+
+@endsection
+

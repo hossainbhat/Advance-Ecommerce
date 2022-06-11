@@ -1,7 +1,7 @@
 
 <?php use App\Models\Product; ?>
 @extends("layouts.admin_layouts.admin_layout")
-@section('title','Section List')
+@section('title','Orders Details')
 @section('script_css')
 <link href="{{asset('backEnd/plugins/datatable/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" />
 @endsection

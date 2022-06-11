@@ -2,6 +2,7 @@
 use App\Models\Product; 
 ?>
 @extends("layouts.front_layouts.front_layout")
+@section('title','Wishlist')
 @section("content")
 <div class="span9">
   <ul class="breadcrumb">

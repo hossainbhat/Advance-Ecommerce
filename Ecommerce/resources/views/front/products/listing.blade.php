@@ -1,4 +1,5 @@
 @extends("layouts.front_layouts.front_layout")
+@section('title','Product Listing')
 @section("content")
 		<!-- Sidebar end=============================================== -->
 		<div class="span9">
@@ -12,6 +13,7 @@
 			 {{$categoryDetails['categoryDetails']['description']}}
 			</p>
 			<hr class="soft"/>
+			@if(!isset($_REQUEST['search']))
 			<form class="form-horizontal span6" name="sortProducts" id="sortProducts">
 				<input type="hidden" name="url" id="url" value="{{ $url }}">
 				<div class="control-group">
@@ -26,7 +28,7 @@
 					</select>
 				</div>
 			</form>
-
+			@endif 
 			<div id="myTab" class="pull-right">
 				<a href="#blockView" data-toggle="tab"></a>
 			</div>
@@ -37,6 +39,7 @@
 
 			</div>
 			<a href="compair.html" class="btn btn-large pull-right">Compare Product</a>
+			@if(!isset($_REQUEST['search']))
 			<div class="pagination">
 				@if(isset($_GET['sort']) && !empty($_GET['sort']))
 					{{ $categoryProduct->appends(['sort' => 'price_lowest'])->links() }}
@@ -44,6 +47,7 @@
 				 	{{ $categoryProduct->links()}}
 				@endif
 			</div>
+			@endif 
 			<br class="clr"/>
 		</div>
 @endsection

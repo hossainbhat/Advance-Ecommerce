@@ -1,4 +1,5 @@
 @extends("layouts.front_layouts.front_layout")
+@section('title','Place Order')
 @section("content")
 <div class="span9">
   <ul class="breadcrumb">

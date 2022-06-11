@@ -44,6 +44,7 @@
 											<a href="{{url('admin/add-edit-brand/'.$brand['id'])}}"><button type="button" class="btn btn-success btn-sm"><i class="fadeIn animated bx bx-edit"></i></button></a>  
 
 											<a class="confirmDelete btn btn-danger btn-sm" record="brand" recoedid="{{$brand->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="fadeIn animated bx bx-trash-alt"></i></a>
+											</td>
 									</tr> 
                                 @endforeach
 									

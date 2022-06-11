@@ -3,11 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}" />
-	<title>Online Store BD</title>
+	<title>{{ config('app.name') }}  @yield('title') </title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	
 	<!-- Front style -->
 	<link id="callCss" rel="stylesheet" href="{{asset('front/css/front.min.css')}}" media="screen"/>
 	<link href="{{asset('front/css/base.css')}}" rel="stylesheet" media="screen"/>

@@ -65,19 +65,19 @@
 										</div>
                                     <div class="col-9">
 										<label for="description" class="form-label">Category Description</label>
-										<textarea class="form-control" name="description" id="description" placeholder="description..." rows="3">@if(!empty($categorydata['description'])) {{$categorydata['description']}} @else {{ old('description')}} @endif</textarea>
+										<textarea class="form-control" name="description" id="editor" placeholder="description..." rows="3">@if(!empty($categorydata['description'])) {{$categorydata['description']}} @else {{ old('description')}} @endif</textarea>
 									</div>
                                     <div class="col-9">
 										<label for="meta_title" class="form-label">Meta Title</label>
-										<textarea class="form-control" name="meta_title" id="meta_title" placeholder="meta_title..." rows="3">@if(!empty($categorydata['meta_title'])) {{$categorydata['meta_title']}} @else {{ old('meta_title')}} @endif</textarea>
+										<input type="text" name="meta_title" class="form-control" id="meta_title" placeholder="Enter meta_title" @if(!empty($categorydata['meta_title'])) value="{{$categorydata['meta_title']}}" @else value="{{ old('meta_title')}}" @endif>
 									</div>
                                     <div class="col-9">
 										<label for="meta_description" class="form-label">Meta Description</label>
-										<textarea class="form-control" name="meta_description" id="meta_description" placeholder="meta_description..." rows="3">@if(!empty($categorydata['meta_description'])) {{$categorydata['meta_description']}} @else {{ old('meta_description')}} @endif</textarea>
+										<textarea class="form-control" name="meta_description" id="editor2" placeholder="meta_description..." rows="3">@if(!empty($categorydata['meta_description'])) {{$categorydata['meta_description']}} @else {{ old('meta_description')}} @endif</textarea>
 									</div>
                                     <div class="col-9">
 										<label for="meta_keywords" class="form-label">Meta Keywords</label>
-										<textarea class="form-control" name="meta_keywords" id="meta_keywords" placeholder="meta_keywords..." rows="3">@if(!empty($categorydata['meta_keywords'])) {{$categorydata['meta_keywords']}} @else {{ old('meta_keywords')}} @endif</textarea>
+										<input type="text" name="meta_keywords" class="form-control" id="meta_keywords" placeholder="Enter meta_keywords" @if(!empty($categorydata['meta_keywords'])) value="{{$categorydata['meta_keywords']}}" @else value="{{ old('meta_keywords')}}" @endif>
 									</div>
                                         <div class="row mb-3">
 											<div class="col-sm-9 text-secondary">
@@ -121,4 +121,19 @@
 			allowClear: Boolean($(this).data('allow-clear')),
 		});
 	</script>
+	
+<script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+		ClassicEditor
+        .create( document.querySelector( '#editor2' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
 @endsection

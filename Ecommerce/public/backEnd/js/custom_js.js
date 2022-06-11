@@ -109,6 +109,72 @@ $(document).ready(function(){
 				}
 			});
 		});
+		//user status 
+		$(".updateUserStatus").click(function(){
+			var status = $(this).text();
+			var user_id = $(this).attr("user_id");
+	
+			$.ajax({
+				type:"post",
+				url:"/admin/update-user-status",
+				data:{status:status,user_id:user_id},
+				success:function(resp){
+					// alert(resp['status']);
+					// alert(resp['user_id']);
+					if (resp['status']==0) {
+						$("#user-"+user_id).html("<a class='updateUserStatus' href='javascript:void(0)'>Inactive</a>");
+					}else if(resp['status']==1){
+						$("#user-"+user_id).html("<a class='updateUserStatus'   href='javascript:void(0)'>Active</a>");
+					}
+				},error:function(){
+					alert("Error");
+				}
+			});
+		});
+				//admin status 
+				$(".updateAdminStatus").click(function(){
+					var status = $(this).text();
+					var admin_id = $(this).attr("admin_id");
+			
+					$.ajax({
+						type:"post",
+						url:"/admin/update-admin-status",
+						data:{status:status,admin_id:admin_id},
+						success:function(resp){
+							// alert(resp['status']);
+							// alert(resp['admin_id']);
+							if (resp['status']==0) {
+								$("#admin-"+admin_id).html("<a class='updateAdminStatus' href='javascript:void(0)'>Inactive</a>");
+							}else if(resp['status']==1){
+								$("#admin-"+admin_id).html("<a class='updateAdminStatus'   href='javascript:void(0)'>Active</a>");
+							}
+						},error:function(){
+							alert("Error");
+						}
+					});
+				});
+								//admin status 
+								$(".updateRatingStatus").click(function(){
+									var status = $(this).text();
+									var rating_id = $(this).attr("rating_id");
+							
+									$.ajax({
+										type:"post",
+										url:"/admin/update-rating-status",
+										data:{status:status,rating_id:rating_id},
+										success:function(resp){
+											// alert(resp['status']);
+											// alert(resp['rating_id']);
+											if (resp['status']==0) {
+												$("#rating-"+rating_id).html("<a class='updateRatingStatus' href='javascript:void(0)'>Inactive</a>");
+											}else if(resp['status']==1){
+												$("#rating-"+rating_id).html("<a class='updateRatingStatus'   href='javascript:void(0)'>Active</a>");
+											}
+										},error:function(){
+											alert("Error");
+										}
+									});
+								});
 			// //sections status active or inactive
 			$(".updateCouponStatus").click(function(){
 				var status = $(this).text();

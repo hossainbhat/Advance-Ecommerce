@@ -1,4 +1,5 @@
 @extends("layouts.admin_layouts.admin_layout")
+@section('title','Profile')
 @section("content")
 <div class="page-wrapper">
 			<div class="page-content">
