@@ -169,6 +169,9 @@ article {
       <ul id="productDetail" class="nav nav-tabs">
         <li class="active"><a href="#home" data-toggle="tab">Product Details</a></li>
         <li><a href="#profile" data-toggle="tab">Related Products</a></li>
+        @if(isset($productDetails['product_video']) && !empty($productDetails['product_video']))
+        <li><a href="#video" data-toggle="tab">Product Video</a></li>
+        @endif 
         <li><a href="#review" data-toggle="tab">Review & Rating</a></li>
       </ul>
       <div id="myTabContent" class="tab-content">
@@ -278,6 +281,13 @@ article {
             </div>
             <br class="clr">
         </div>
+        @if(isset($productDetails['product_video']) && !empty($productDetails['product_video']))
+        <div class="tab-pane fade" id="video">
+          <video width="640" height="480" controls="">
+              <source src="{{url('videos/'.$productDetails['product_video'])}}" type="video/mp4">
+          </video>
+        </div>
+        @endif
         <div class="tab-pane fade" id="review">
             <div class="row">
               <div class="span4">

@@ -1,10 +1,11 @@
+
 <div class="sidebar-wrapper" data-simplebar="true">
 			<div class="sidebar-header">
 				<div>
 					<img src="{{asset('backEnd/images/logo-icon.png')}}" class="logo-icon" alt="logo icon">
 				</div>
 				<div>
-					<h4 class="logo-text">Everywearbd</h4>
+					<h4 class="logo-text">Everywear</h4>
 				</div>
 				<div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
 				</div>
@@ -21,9 +22,9 @@
 				
 				<li>
 					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
+						<div class="parent-icon"><i class="fadeIn animated bx bx-unite"></i>
 						</div>
-						<div class="menu-title">Section</div>
+						<div class="menu-title">Sections</div>
 					</a>
 					<ul>
 						<li> <a href="{{url('admin/add-edit-section')}}"><i class="bx bx-right-arrow-alt"></i>Add Sections</a></li>
@@ -33,9 +34,9 @@
 				</li>
 				<li>
 					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
+						<div class="parent-icon"><i class="bx bx-cookie"></i>
 						</div>
-						<div class="menu-title">Brand</div>
+						<div class="menu-title">Brands</div>
 					</a>
 					<ul>
 						<li> <a href="{{url('admin/add-edit-brand')}}"><i class="bx bx-right-arrow-alt"></i>Add Brand</a></li>
@@ -44,11 +45,13 @@
 
 					</ul>
 				</li>
+
+			
 				<li>
 					<a href="javascript:;" class="has-arrow">
 						<div class="parent-icon"><i class="bx bx-category"></i>
 						</div>
-						<div class="menu-title">Category</div>
+						<div class="menu-title">Categories</div>
 					</a>
 					<ul>
 						<li> <a href="{{url('admin/add-edit-category')}}"><i class="bx bx-right-arrow-alt"></i>Add Category</a></li>
@@ -56,11 +59,12 @@
 						</li>
 					</ul>
 				</li>
+				
 				<li>
 					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
+						<div class="parent-icon"><i class="fadeIn animated bx bx-exclude"></i>
 						</div>
-						<div class="menu-title">Product</div>
+						<div class="menu-title">Products</div>
 					</a>
 					<ul>
 						<li> <a href="{{url('admin/add-edit-product')}}"><i class="bx bx-right-arrow-alt"></i>Add Product</a></li>
@@ -70,9 +74,9 @@
 				</li>
 				<li>
 					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
+						<div class="parent-icon"><i class="fadeIn animated bx bx-images"></i>
 						</div>
-						<div class="menu-title">Banner</div>
+						<div class="menu-title">Banners</div>
 					</a>
 					<ul>
 						<li> <a href="{{url('admin/add-edit-banner')}}"><i class="bx bx-right-arrow-alt"></i>Add Banner</a></li>
@@ -82,9 +86,9 @@
 				</li>
 				<li>
 					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
+						<div class="parent-icon"><i class="fadeIn animated bx bx-gift"></i>
 						</div>
-						<div class="menu-title">Coupon</div>
+						<div class="menu-title">Coupons</div>
 					</a>
 					<ul>
 						<li> <a href="{{url('admin/add-edit-coupon')}}"><i class="bx bx-right-arrow-alt"></i>Add Coupon</a></li>
@@ -94,66 +98,60 @@
 				</li>
 				<li>
 					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
+						<div class="parent-icon"><i class="bx bx-repeat"></i>
 						</div>
-						<div class="menu-title">Coupon</div>
+						<div class="menu-title">Cms Pages</div>
 					</a>
 					<ul>
-					<li> <a href="{{url('admin/shipping-charges')}}"><i class="bx bx-right-arrow-alt"></i>Shipping Charge</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
-						</div>
-						<div class="menu-title">Rating</div>
-					</a>
-					<ul>
-					<li> <a href="{{url('admin/ratings')}}"><i class="bx bx-right-arrow-alt"></i>Rating List</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
-						</div>
-						<div class="menu-title">Cms Page</div>
-					</a>
-					<ul>
-						<li> <a href="{{url('admin/cms-pages')}}"><i class="bx bx-right-arrow-alt"></i>Cms Pages List</a>
-						</li>
+						
 						<li> <a href="{{url('admin/add-edit-cms')}}"><i class="bx bx-right-arrow-alt"></i>Add Cms</a>
+						</li>
+						<li> <a href="{{url('admin/cms-pages')}}"><i class="bx bx-right-arrow-alt"></i>Cms Pages List</a>
 						</li>
 						
 
 					</ul>
 				</li>
+
+				<li>
+					<a href="{{url('admin/orders')}}">
+						<div class="parent-icon"><i class="lni lni-cart-full"></i>
+						</div>
+						<div class="menu-title">Orders</div>
+					</a>
+				</li>
+			
+				<li>
+					<a href="{{url('admin/ratings')}}">
+						<div class="parent-icon"><i class="lni lni-star"></i>
+						</div>
+						<div class="menu-title">Ratings</div>
+					</a>
+				</li>
 				<li>
 					<a href="{{url('admin/shipping-charges')}}">
-						<div class="parent-icon"><i class="bx bx-category"></i>
+						<div class="parent-icon"><i class="fadeIn animated bx bx-cart"></i>
 						</div>
 						<div class="menu-title">Shipping Charge</div>
 					</a>
 				</li>
+
 				<li>
-					<a href="{{url('admin/orders')}}">
-						<div class="parent-icon"><i class="bx bx-category"></i>
+					<a href="{{url('admin/users')}}">
+						<div class="parent-icon"><i class="bx bx-user-circle"></i>
 						</div>
-						<div class="menu-title">Order List</div>
+						<div class="menu-title">Users</div>
 					</a>
 				</li>
 				<li>
-					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-user"></i>
+					<a href="{{url('admin/admins')}}">
+						<div class="parent-icon"><i class="fadeIn animated bx bx-wrench"></i>
 						</div>
-						<div class="menu-title">User</div>
+						<div class="menu-title">Roles & Parmissions</div>
 					</a>
-					<ul>
-						<li> <a href="{{url('admin/users')}}"><i class="bx bx-right-arrow-alt"></i>User List</a></li>
-						<li> <a href="{{url('admin/admins')}}"><i class="bx bx-right-arrow-alt"></i>Admin List</a></li>
-					</ul>
 				</li>
+				
+				
 				<li>
 					<a href="{{url('admin/logout')}}">
 						<div class="parent-icon"><i class="fadeIn animated bx bx-power-off"></i>

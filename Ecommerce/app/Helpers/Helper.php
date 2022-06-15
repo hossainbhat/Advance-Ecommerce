@@ -5,7 +5,7 @@ use App\Models\Admin;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-// use Session;
+
 
 if(!function_exists('totalCartItems')){
     function totalCartItems(){
@@ -27,6 +27,7 @@ if(!function_exists('totalCartItems')){
         }
         return $totalWishlistItems;
     }
+
 
 }
 

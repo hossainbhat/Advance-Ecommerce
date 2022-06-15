@@ -7,14 +7,29 @@ use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Models\Section;
 use App\Models\User;
+use App\Models\AdminsRole;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
+use Auth;
 
 class CouponController extends Controller
 {
     public function coupons(){
         $coupons = Coupon::get();
-        return view('admin.coupon.coupons',compact('coupons'));
+        $couponModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $couponModul['view_access'] = 1;
+            $couponModul['edit_access'] = 1;
+            $couponModul['full_access'] = 1;
+        }else if($couponModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $couponModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
+        return view('admin.coupon.coupons',compact('coupons','couponModul'));
     }
 
     public function updateCouponStatus(Request $request){
@@ -31,6 +46,19 @@ class CouponController extends Controller
     	}
     }
     public function addEditCoupon(Request $request,$id=null){
+        $couponModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $couponModul['view_access'] = 1;
+            $couponModul['edit_access'] = 1;
+            $couponModul['full_access'] = 1;
+        }else if($couponModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $couponModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
         if ($id=="") {
             $name ="Add Coupon";
             $coupon = new Coupon;
@@ -102,7 +130,7 @@ class CouponController extends Controller
         $users = User::select('email')->where('status',1)->get();
         $categories = Section::with('categories')->get();
   
-        return view('admin.coupon.add_edit_coupon',compact('coupon','name','categories','users','selectUsers','selectCats'));
+        return view('admin.coupon.add_edit_coupon',compact('couponModul','coupon','name','categories','users','selectUsers','selectCats'));
     }
 
     public function deleteCoupon($id){

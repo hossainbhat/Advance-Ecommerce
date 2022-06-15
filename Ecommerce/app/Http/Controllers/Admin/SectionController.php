@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Section;
-use Illuminate\Support\Facades\Session;
-
-// use Session;
+use App\Models\AdminsRole;
+use Auth;
+use Session;
 
 class SectionController extends Controller
 {
@@ -15,9 +15,26 @@ class SectionController extends Controller
     	Session::put('page','sections');
 
     	$sections = Section::select('id','name','status')->get();
-    	return view('admin.section.sections')->with(compact('sections'));
+
+		$sectionModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $sectionModul['view_access'] = 1;
+            $sectionModul['edit_access'] = 1;
+            $sectionModul['full_access'] = 1;
+        }else if($sectionModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $sectionModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
+
+    	return view('admin.section.sections')->with(compact('sections','sectionModul'));
     }
 	public function updateSectionStatus(Request $request){
+		
+	
     	if ($request->ajax()) {
     		$data = $request->all();
     		// echo "<pre>"; print_r($data); die;
@@ -31,6 +48,19 @@ class SectionController extends Controller
     	}
     }
 	public function addEditSection(Request $request, $id=null){
+		$sectionModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $sectionModul['view_access'] = 1;
+            $sectionModul['edit_access'] = 1;
+            $sectionModul['full_access'] = 1;
+        }else if($sectionModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $sectionModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
 		if ($id=="") {
 				$name ="Add Section";
 				$section = new Section;
@@ -64,7 +94,7 @@ class SectionController extends Controller
 			return redirect("admin/sections");
 		}
 		$sections = Section::get();
-		return view('admin.section.add_edit_section')->with(compact('name','sections','sectiondata'));
+		return view('admin.section.add_edit_section')->with(compact('name','sections','sectiondata','sectionModul'));
 	}
 
 	public function deleteSection($id=null){

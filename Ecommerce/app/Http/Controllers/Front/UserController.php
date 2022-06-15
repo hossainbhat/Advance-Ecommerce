@@ -137,6 +137,7 @@ class UserController extends Controller
 
     public function logoutUser(){
         Auth::logout();
+        Session::flush();
         return redirect('/');
     }
 
@@ -262,5 +263,8 @@ class UserController extends Controller
            return redirect()->back();
       }
     }
+
+
+    
 
 }

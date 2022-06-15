@@ -1,5 +1,5 @@
 @extends("layouts.admin_layouts.admin_layout")
-@section('title','Section List')
+@section('title','User List')
 @section('script_css')
 <link href="{{asset('backEnd/plugins/datatable/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" />
 @endsection
@@ -8,6 +8,8 @@
 		<div class="page-wrapper">
 			<div class="page-content">
 				<h6 class="mb-0 text-uppercase">User List</h6>
+				<a style="float: right; margin-top: -30px;" href="{{url('admin/view-users-chart')}}"><button type="button" class="btn btn-success btn-sm">View User Chart</button></a>
+
 				<hr/>
 				<div class="card">
 					<div class="card-body">
@@ -27,7 +29,9 @@
 										<th>Mobile</th>
 										<th>City</th>
 										<th>Country</th>
+										@if($userModul['full_access'] ==1)
 										<th>Status</th>
+										@endif 
 									</tr>
 								</thead>
 								<tbody>
@@ -39,6 +43,7 @@
                                         <td>{{$user['mobile']}}</td>
                                         <td>{{$user['city']}}</td>
                                         <td>{{$user['country']}}</td>
+										@if($userModul['full_access'] ==1)
 										<td>
 											@if($user['status'] ==1)
 												<a class="updateUserStatus" id="user-{{$user['id']}}" user_id="{{$user['id']}}" href="javascript:void(0)">Active</a>  
@@ -46,7 +51,7 @@
 												<a class="updateUserStatus" id="user-{{$user['id']}}" user_id="{{$user['id']}}" href="javascript:void(0)">Inactive</a>  
 											@endif
 										</td>
-			
+										@endif 
 									</tr> 
                                 @endforeach
 									

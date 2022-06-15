@@ -5,24 +5,24 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ProductsAttribute;
+use App\Models\DeliveryAddress;
 use App\Models\ShippingCharge;
+use App\Models\OrdersProduct;
+use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Cart;
+use App\Models\Wishlist;
+use App\Models\Rating;
 use App\Models\Coupon;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Sms;
-use App\Models\Wishlist;
-use App\Models\Rating;
-use App\Models\OrdersProduct;
-use App\Models\DeliveryAddress;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
 use DB;
 
 class ProductController extends Controller
@@ -115,7 +115,7 @@ class ProductController extends Controller
              $fitArray = $productFilters['fitArray'];
              $occsionArray = $productFilters['occsionArray'];
 
-           $categoryProduct = $categoryProduct->paginate(30);
+           $categoryProduct = $categoryProduct->paginate(18);
            $page_name = "listing";
              return view('front.products.listing')->with(compact('categoryDetails','categoryProduct','url','fabricArray','sleeveArray','patternArray','fitArray','occsionArray','page_name'));
          }else{
@@ -164,6 +164,11 @@ class ProductController extends Controller
       public function addtocart(Request $request){
         if($request->isMethod('post')){
           $data = $request->all();
+
+          //check empty quantity
+          if($data['quantity']<=0 || $data['quantity']==""){
+              $data['quantity']=1;
+          }
           // echo "<pre>"; print_r($data); die;
           $getProductStock = ProductsAttribute::where(['product_id'=>$data['product_id'],'size'=>$data['size']])->first()->toArray();
           // echo $getProductStock['size']; die;
@@ -423,7 +428,7 @@ class ProductController extends Controller
         $total_weight =0;
         foreach($userCartItems as $item){
           $product_weight = $item['product']['product_weight'];
-          $total_weight = $total_weight + $product_weight;
+          $total_weight = $total_weight + ($product_weight * $item['quantity']);
           $attrPrice = Product::getDiscountedAttrPrice($item['product_id'],$item['size']);
           $total_price = $total_price + ( $attrPrice['final_price'] * $item['quantity']);
 
@@ -436,6 +441,42 @@ class ProductController extends Controller
         }
         if($request->isMethod('post')){
           $data = $request->all();
+
+          //wesite security 
+          foreach($userCartItems as $key => $cart){
+            $product_status = Product::getProductStatus($cart['product_id']);
+            if($product_status==0){
+              // Product::deleteCartProduct($cart['product_id']);
+              $message = $cart['product']['product_name']."Product is not avalable so remove from cart";
+              Session::flash('error_message',$message);
+              return redirect('/cart');
+            }
+
+            $product_stock = Product::getProductStock($cart['product_id'],$cart['size']);
+            if($product_stock==0){
+              // Product::deleteCartProduct($cart['product_id']);
+              $message = $cart['product']['product_name']."Product is not avalable so remove from cart";
+              Session::flash('error_message',$message);
+              return redirect('/cart');
+            }
+
+            $getAttributeCount = Product::getAttributeCount($cart['product_id'],$cart['size']);
+            if($getAttributeCount==0){
+                // Product::deleteCartProduct($cart['product_id']);
+                $message = $cart['product']['product_name']."Product is not avalable so remove from cart";
+                Session::flash('error_message',$message);
+                return redirect('/cart');
+            }
+
+            $getCategoryStatus = Product::getCategoryStatus($cart['product']['category_id']);
+            if($getCategoryStatus==0){
+                // Product::deleteCartProduct($cart['product_id']);
+                $message = $cart['product']['product_name']."Product is not avalable so remove from cart";
+                Session::flash('error_message',$message);
+                return redirect('/cart');
+            }
+          }
+
           // echo Session::get('grand_total');
           if(empty($data['address_id'])){
             $message = "please select delivary address";

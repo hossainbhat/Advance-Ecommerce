@@ -26,7 +26,9 @@
 										<th>Product Name</th>
 										<th>Review</th>
 										<th>Rating</th>
+										@if($ratingModul['full_access'] ==1)
 										<th width="10%">Status</th>
+										@endif 
 									</tr>
 								</thead>
 								<tbody>
@@ -34,9 +36,10 @@
                                     <tr>
 										<td>{{$key+1}}</td>
 										<td>{{$rating['user']['email']}}</td>
-										<td>{{$rating['product']['product_name']}}</td>
+										<td><a href="{{url($rating['id'])}}">{{$rating['product']['product_name']}}</a></td>
 										<td>{{$rating['review']}}</td>
 										<td>{{$rating['rating']}}</td>
+										@if($ratingModul['full_access'] ==1)
 										<td>
 											@if($rating['status'] ==1)
 												<a class="updateRatingStatus" id="rating-{{$rating['id']}}" rating_id="{{$rating['id']}}" href="javascript:void(0)">Active</a>  
@@ -44,6 +47,7 @@
 												<a class="updateRatingStatus" id="rating-{{$rating['id']}}" rating_id="{{$rating['id']}}" href="javascript:void(0)">Inactive</a>  
 											@endif
 										</td>
+										@endif 
 										
 									</tr> 
                                 @endforeach

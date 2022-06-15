@@ -5,13 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CmsPage;
+use App\Models\AdminsRole;
 use Session;
+use Auth;
 
 class CmsController extends Controller
 {
     public function cmsPages(){
         $cmsPages = CmsPage::where('status',1)->get()->toArray();
-        return view("admin.cms.cms_pages")->with(compact('cmsPages'));
+        $cmsModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $cmsModul['view_access'] = 1;
+            $cmsModul['edit_access'] = 1;
+            $cmsModul['full_access'] = 1;
+        }else if($cmsModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $cmsModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
+        return view("admin.cms.cms_pages")->with(compact('cmsPages','cmsModul'));
     }
     public function updateCmsStatus(Request $request){
     	if ($request->ajax()) {
@@ -28,6 +43,19 @@ class CmsController extends Controller
     }
 
     public function addEditCms(Request $request, $id=null){
+        $cmsModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $cmsModul['view_access'] = 1;
+            $cmsModul['edit_access'] = 1;
+            $cmsModul['full_access'] = 1;
+        }else if($cmsModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $cmsModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
         if ($id=="") {
             $name ="Add Cms";
             $cms = new CmsPage;
@@ -81,7 +109,7 @@ class CmsController extends Controller
             return redirect("admin/cms-pages");
         }
         $cms_pages = CmsPage::get();
-        return view('admin.cms.add_edit_cms')->with(compact('name','cms_pages','cmsdata'));
+        return view('admin.cms.add_edit_cms')->with(compact('name','cms_pages','cmsdata','cmsModul'));
     }
 
     public function deleteCms($id=null){

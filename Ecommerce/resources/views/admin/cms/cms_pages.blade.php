@@ -26,7 +26,10 @@
                                         <th>Title</th>
                                         <th>Url</th>
                                         <th>Created At</th>
+										@if($cmsModul['edit_access'] == 1 || $cmsModul['full_access'] ==1)
+										<th>Status</th>
 										<th width="10%">Modify</th>
+										@endif 
 									</tr>
 								</thead>
 								<tbody>
@@ -36,6 +39,7 @@
                                         <td>{{$cms['title']}}</td>
                                         <td>{{$cms['url']}}</td>
                                         <td>{{date('d-M-Y', strtotime($cms['created_at']))}}</td>
+										@if($cmsModul['edit_access'] == 1 || $cmsModul['full_access'] ==1)
                                         <td>
                                             @if($cms['status'] ==1)
 												<a class="updateCmsStatus" id="cms-{{$cms['id']}}" cms_id="{{$cms['id']}}" href="javascript:void(0)">Active</a>  
@@ -44,10 +48,12 @@
 											@endif
                                         </td>
                                         <td>
-                                            <a href="{{url('admin/add-edit-cms/'.$cms['id'])}}"><button type="button" class="btn btn-success btn-sm"><i class="fadeIn animated bx bx-edit"></i></button></a>  
-
-                                            <a class="confirmDelete btn btn-danger btn-sm" record="cms" recoedid="{{$cms['id']}}" href="javascript:void('0')" style="font-size: 16px;"><i class="fadeIn animated bx bx-trash-alt"></i></a>
-                                        </td>
+                                            <a href="{{url('admin/add-edit-cms/'.$cms['id'])}}"><i class="btn btn-success btn-sm fadeIn animated bx bx-edit"></i></a>  
+											@if($cmsModul['full_access'] ==1)
+                                            <a class="confirmDelete" record="cms" recoedid="{{$cms['id']}}" href="javascript:void('0')" style="font-size: 16px;"><i class="btn btn-danger btn-sm fadeIn animated bx bx-trash-alt"></i></a>
+											@endif 
+										</td>
+										@endif 
                                     </tr>
                                     @endforeach
 								</tbody>

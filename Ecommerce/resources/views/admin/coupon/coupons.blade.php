@@ -27,8 +27,10 @@
                                         <th>Type</th>
                                         <th>Amount</th>
                                         <th>Expity Date</th>
+										@if($couponModul['edit_access'] == 1 || $couponModul['full_access'] ==1)
                                         <th>Status</th>
 										<th width="10%">Modify</th>
+										@endif 
 									</tr>
 								</thead>
 								<tbody>
@@ -47,6 +49,7 @@
                                         <td>
 											{{ $coupon->expiry_date? date('d-M-Y',strtotime($coupon->expiry_date)): '' }}
 										</td>
+										@if($couponModul['edit_access'] == 1 || $couponModul['full_access'] ==1)
 										<td>
 											@if($coupon['status'] ==1)
 												<a class="updateCouponStatus" id="coupon-{{$coupon->id}}" coupon_id="{{$coupon->id}}" href="javascript:void(0)">Active</a>  
@@ -55,9 +58,12 @@
 											@endif
 										</td>
 										<td>
-											<a href="{{url('admin/add-edit-coupon/'.$coupon['id'])}}"><button type="button" class="btn btn-success btn-sm"><i class="fadeIn animated bx bx-edit"></i></button></a>  
-
-											<a class="confirmDelete btn btn-danger btn-sm" record="coupon" recoedid="{{$coupon->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="fadeIn animated bx bx-trash-alt"></i></a>
+											<a href="{{url('admin/add-edit-coupon/'.$coupon['id'])}}"><i class="btn btn-success btn-sm fadeIn animated bx bx-edit"></i></a>  
+											@if($couponModul['full_access'] ==1)
+											<a class="confirmDelete" record="coupon" recoedid="{{$coupon->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="btn btn-danger btn-sm fadeIn animated bx bx-trash-alt"></i></a>
+											@endif 
+										</td>
+										@endif 
 									</tr> 
                                 @endforeach
 									

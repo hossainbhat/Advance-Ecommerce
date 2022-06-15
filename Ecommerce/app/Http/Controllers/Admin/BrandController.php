@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Brand;
-// use Session;
-use Illuminate\Support\Facades\Session;
+use App\Models\AdminsRole;
+use Session;
+use Auth;
 
 class BrandController extends Controller
 {
@@ -14,7 +15,20 @@ class BrandController extends Controller
     	Session::put('page','brands');
 
     	$brands = Brand::get();
-    	return view('admin.brand.brands')->with(compact('brands'));
+		$brandModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $brandModul['view_access'] = 1;
+            $brandModul['edit_access'] = 1;
+            $brandModul['full_access'] = 1;
+        }else if($brandModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $brandModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
+    	return view('admin.brand.brands')->with(compact('brands','brandModul'));
     }
 
 
@@ -33,6 +47,19 @@ class BrandController extends Controller
     }
 
     public function addEditBrand(Request $request, $id=null){
+		$brandModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $brandModul['view_access'] = 1;
+            $brandModul['edit_access'] = 1;
+            $brandModul['full_access'] = 1;
+        }else if($brandModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $brandModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
 	        if ($id=="") {
 	            $name ="Add Brand";
 	            $brand = new Brand;
@@ -66,7 +93,7 @@ class BrandController extends Controller
             return redirect("admin/brands");
         }
         $brands = Brand::get();
-        return view('admin.brand.add_edit_brand')->with(compact('name','brands','branddata'));
+        return view('admin.brand.add_edit_brand')->with(compact('name','brands','branddata','brandModul'));
     }
 
     public function deleteBrand($id=null){

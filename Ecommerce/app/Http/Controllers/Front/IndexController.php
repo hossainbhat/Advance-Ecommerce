@@ -16,7 +16,7 @@ class IndexController extends Controller
     	$featuredItemChunk = array_chunk($featuredItem, 4);
     	// echo "<pre>"; print_r($featuredItemChunk);die;
     	//Latest Products
-    	$newProduct = Product::orderBy('id','Desc')->where('status',1)->limit(9)->get()->toArray();
+    	$newProduct = Product::orderBy('id','Desc')->where('status',1)->limit(30)->get()->toArray();
     	$page_name = "index";
     	return view('front.index')->with(compact('page_name','featuredItemChunk','featuredItemCount','newProduct'));
     }

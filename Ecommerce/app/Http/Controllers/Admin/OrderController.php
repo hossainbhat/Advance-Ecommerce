@@ -10,15 +10,30 @@ use App\Models\OrderStatus;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Sms;
+use App\Models\AdminsRole;
+use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Session;
+use Auth;
 
 class OrderController extends Controller
 {
     public function orders(){
         $orders = Order::with('orders_products')->orderBy('id','DESC')->get()->toArray();
+        $orderModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $orderModul['view_access'] = 1;
+            $orderModul['full_access'] = 1;
+        }else if($orderModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $orderModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
         // dd($orders);die;
-        return view("admin.orders.orders")->with(compact('orders'));
+        return view("admin.orders.orders")->with(compact('orders','orderModul'));
     }
 
     public function orderDetails($id){
@@ -388,4 +403,15 @@ class OrderController extends Controller
       $dompdf->stream();
     }
     
+
+
+
+    public function viewOrderChart(){
+      $current_menth_orders = Order::whereYear('created_at',Carbon::now()->year)->whereMonth('created_at',Carbon::now()->month)->count();
+      $before_1_month_orders = Order::whereYear('created_at',Carbon::now()->year)->whereMonth('created_at',Carbon::now()->subMonth(1))->count();
+      $before_2_month_orders = Order::whereYear('created_at',Carbon::now()->year)->whereMonth('created_at',Carbon::now()->subMonth(2))->count();
+      $before_3_month_orders = Order::whereYear('created_at',Carbon::now()->year)->whereMonth('created_at',Carbon::now()->subMonth(3))->count();
+      $orderCount = array($current_menth_orders,$before_1_month_orders,$before_2_month_orders,$before_3_month_orders);
+      return view("admin.orders.view_orders_chart")->with(compact('orderCount'));
+    }
 }

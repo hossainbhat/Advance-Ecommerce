@@ -55,6 +55,12 @@
 												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 											</div>
 										@endif
+										@if(Session::has('success_message'))
+											<div class="alert alert-success border-0 bg-success alert-dismissible fade show">
+												<div class="text-white">{{Session::get('success_message')}}</div>
+												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+											</div>
+										@endif
 										<form class="row g-3" action="{{url('/admin')}}" method="post" autocomplete="off">
 										@csrf
 											<div class="col-12">
@@ -72,6 +78,9 @@
 													<input class="form-check-input" name="remember_token" type="checkbox" id="remember_token" {{ old('remember_token') ? 'checked' : '' }}>
 													<label class="form-check-label" for="remember_token">Remember Me</label>
 												</div>
+											</div>
+											<div class="col-md-6 text-end">	<a href="{{url('admin/forgot-password')}}">Forgot Password ?</a>
+
 											</div>
 											<div class="col-12">
 												<div class="d-grid">

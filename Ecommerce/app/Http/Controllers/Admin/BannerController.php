@@ -5,20 +5,46 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Banner;
-use Illuminate\Support\Facades\Session;
-use Intervention\Image\Facades\Image;
-// use Session;
-// use Image;
+use App\Models\AdminsRole;
+use Session;
+use Image;
+use Auth;
 class BannerController extends Controller
 {
     public function banners(){
     	Session::put('page','banners');
     	$banners = Banner::get();
     	// dd($banners); die;
-    	return view('admin.banner.banners')->with(compact('banners'));
+        $bannerModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $bannerModul['view_access'] = 1;
+            $bannerModul['edit_access'] = 1;
+            $bannerModul['full_access'] = 1;
+        }else if($bannerModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $bannerModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
+    	return view('admin.banner.banners')->with(compact('banners','bannerModul'));
     }
 
     public function addEditBanner(Request $request, $id=null){
+        $bannerModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $bannerModul['view_access'] = 1;
+            $bannerModul['edit_access'] = 1;
+            $bannerModul['full_access'] = 1;
+        }else if($bannerModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $bannerModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
         if ($id=="") {
             $name ="Add Banner";
             $banner = new Banner;
@@ -72,7 +98,7 @@ class BannerController extends Controller
             return redirect("admin/banners");
         }
         $banners = Banner::get();
-        return view('admin.banner.add_edit_banner')->with(compact('name','banners','bannerdata'));
+        return view('admin.banner.add_edit_banner')->with(compact('name','banners','bannerdata','bannerModul'));
     }
 
     public function updateBannerStatus(Request $request){

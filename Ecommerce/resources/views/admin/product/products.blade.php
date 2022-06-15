@@ -29,8 +29,10 @@
                                         <th>Code</th>
                                         <th>Color</th>
                                         <th>Image</th>
+										@if($productModul['edit_access'] == 1 || $productModul['full_access'] ==1)
 										<th>Status</th>
 										<th width="10%">Modify</th>
+										@endif 
 									</tr>
 								</thead>
 								<tbody>
@@ -39,7 +41,7 @@
                                         <td>{{$product->id}}</td>
                                         <td>{{$product->section['name']}}</td>
                                         <td>{{$product->category['name']}}</td>
-                                        <td>{{$product->product_name}}</td>
+                                        <td><a target="__black" href="{{url($product['id'])}}">{{$product->product_name}}</a></td>
                                         <td>{{$product['product_code']}}</td>
                                         <td>{{$product['product_color']}}</td>
 										<td>
@@ -50,6 +52,7 @@
 											<img width="80px" src="{{asset('backEnd/images/products/small/no-image.png')}}">
 											@endif
 										</td>
+										@if($productModul['edit_access'] == 1 || $productModul['full_access'] ==1)
 										<td>
 											@if($product['status'] ==1)
 												<a class="updateProductStatus" id="product-{{$product->id}}" product_id="{{$product->id}}" href="javascript:void(0)">Active</a>  
@@ -58,11 +61,14 @@
 											@endif
 										</td>
 										<td>
-											<a href="{{url('admin/add-edit-product/'.$product['id'])}}" title="Edit Product"><button type="button" class="btn btn-success btn-sm"><i class="fadeIn animated bx bx-edit"></i></button></a>  
-											<a href="{{url('admin/add-edit-product-image/'.$product['id'])}}" title="Product Image"><button type="button" class="btn btn-info btn-sm"><i class="fadeIn animated bx bx-images"></i></button></a>  
-											<a href="{{url('admin/add-edit-product-attribute/'.$product['id'] )}}" title="Product Attribute"><button type="button" class="btn btn-warning btn-sm"><i class="fadeIn animated bx bx-edit"></i></button></a>  
-
-											<a class="confirmDelete btn btn-danger btn-sm" record="product" recoedid="{{$product->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="fadeIn animated bx bx-trash-alt"></i></a>
+											<a href="{{url('admin/add-edit-product/'.$product['id'])}}" title="Edit Product"><i class="btn btn-success btn-sm fadeIn animated bx bx-edit"></i></a>  
+											<a href="{{url('admin/add-edit-product-image/'.$product['id'])}}" title="Product Image"><i class="btn btn-info btn-sm fadeIn animated bx bx-images"></i></a>  
+											<a href="{{url('admin/add-edit-product-attribute/'.$product['id'] )}}" title="Product Attribute"><i class="btn btn-warning btn-sm fadeIn animated bx bx-edit"></i></a>  
+											@if($productModul['full_access'] ==1)
+											<a class="confirmDelete" record="product" recoedid="{{$product->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="btn btn-danger btn-sm fadeIn animated bx bx-trash-alt"></i></a>
+											@endif 
+										</td>
+										@endif 
 									</tr> 
                                 @endforeach
 									

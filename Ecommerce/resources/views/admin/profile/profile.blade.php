@@ -108,7 +108,7 @@
 											</div>
 											<div class="col-sm-9 text-secondary">
                                                 <label for="formFile" class="form-label">Default file input example</label>
-                                                <input class="form-control" name="image" type="file" id="formFile">
+                                                <input class="form-control" name="image" required type="file" id="formFile">
 											</div>
                                             @if(!empty(Auth::guard('admin')->user()->image))
                                             <div style="height: 90px;">

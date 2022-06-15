@@ -397,6 +397,12 @@ $(document).on('click','.btnItemDelete',function(){
      $(".userLogin").on('click',function(){
         alert("Login to Add Products in your Wishlist");
      });
+
+     $(".customtailorz").on('click',function(){
+        alert("Please Login to to Submit Your Enquiry");
+     });
+
+     
     //wish list 
      $(".updateWishlist").on('click',function(){
         var product_id = $(this).data('productid');

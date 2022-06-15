@@ -6,23 +6,50 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Section;
-use Illuminate\Support\Facades\Session;
-use Intervention\Image\Facades\Image;
-// use Session;
-// use Image;
+use App\Models\AdminsRole;
+use Auth;
+use Session;
+use Image;
 
 class CategoryController extends Controller
 {
     public function categories(){
         Session::put('page','Categories');
     	$categories = Category::with(['section','parentcategory'])->get();
+
+        $categoryModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $categoryModul['view_access'] = 1;
+            $categoryModul['edit_access'] = 1;
+            $categoryModul['full_access'] = 1;
+        }else if($categoryModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $categoryModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
             // $categories = json_decode(json_encode($categories),true);
             // echo "<pre>"; print_r($categories); die;
-    	return view('admin.category.categories')->with(compact('categories'));
+    	return view('admin.category.categories')->with(compact('categories','categoryModul'));
     }
 
     
     public function addEditCategory(Request $request, $id=null){
+        $categoryModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $categoryModul['view_access'] = 1;
+            $categoryModul['edit_access'] = 1;
+            $categoryModul['full_access'] = 1;
+        }else if($categoryModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $categoryModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
         if ($id=="") {
             $name ="Add Category";
             $category = new Category;
@@ -95,7 +122,7 @@ class CategoryController extends Controller
             return redirect("admin/categories");
         }
         $sections = Section::get();
-        return view('admin.category.add_edit_category')->with(compact('name','sections','categorydata','getCategories'));
+        return view('admin.category.add_edit_category')->with(compact('name','sections','categorydata','getCategories','categoryModul'));
     }
 
     public function appendCategoriesLevel(Request $request){
@@ -123,6 +150,7 @@ class CategoryController extends Controller
     	}
     }
     public function deleteCategoryImage($id=null){
+        
         $categoryImage = Category::select('image')->where('id',$id)->first();
 
         $category_image_path = "backEnd/images/category_image/";

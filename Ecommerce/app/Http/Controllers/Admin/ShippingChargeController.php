@@ -5,13 +5,29 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ShippingCharge;
+use App\Models\AdminsRole;
+use Auth;
+use Session;
 
 class ShippingChargeController extends Controller
 {
     public function shippingCharge(){
+        $shipingModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+        if(Auth::guard('admin')->user()->type == "superadmin"){
+            $shipingModul['view_access'] = 1;
+            $shipingModul['edit_access'] = 1;
+            $shipingModul['full_access'] = 1;
+        }else if($shipingModulCount == 0){
+            $message ="The Feature is restried for you !";
+            Session::flash('error_message',$message);
+            return redirect("admin/dashboard");
+        }else{
+            $shipingModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+        }
         $shipping_charges = ShippingCharge::get()->toArray();
 
-        return view("admin.shipping.view_shipping_charges")->with(compact('shipping_charges'));
+        return view("admin.shipping.view_shipping_charges")->with(compact('shipping_charges','shipingModul'));
     }
 
     public function updateShippingChargeStatus(Request $request){

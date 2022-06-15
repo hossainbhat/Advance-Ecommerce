@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/admin')->namespace('Admin')->group(function(){
 
     Route::match(['get','post'],'/', [App\Http\Controllers\Admin\AdminController::class, 'login']);
-    
+    Route::match(['get','post'],'/forgot-password', [App\Http\Controllers\Admin\AdminController::class, 'AdminforgotPassword']);
+
     Route::group(['middleware' => ['admin']], function () {
         Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard']);
         Route::get('/logout', [App\Http\Controllers\Admin\AdminController::class, 'logout']);
@@ -69,6 +70,9 @@ Route::prefix('/admin')->namespace('Admin')->group(function(){
         Route::post('/update-order-status', [App\Http\Controllers\Admin\OrderController::class, 'updateOrderStatus']);
         Route::get('/view-order-invoice/{id}', [App\Http\Controllers\Admin\OrderController::class, 'viewOrderInvoice']);
         Route::get('/print-pdf-invoice/{id}', [App\Http\Controllers\Admin\OrderController::class, 'printPDFInvoice']);
+        //orders chart
+        Route::get('/view-orders-chart', [App\Http\Controllers\Admin\OrderController::class, 'viewOrderChart']);
+
         //shipping-charges 
         Route::get('/shipping-charges', [App\Http\Controllers\Admin\ShippingChargeController::class, 'shippingCharge']);
         Route::post('/update-shipping-status', [App\Http\Controllers\Admin\ShippingChargeController::class, 'updateShippingChargeStatus']);
@@ -80,10 +84,19 @@ Route::prefix('/admin')->namespace('Admin')->group(function(){
         Route::get('/delete-cms/{id}', [App\Http\Controllers\Admin\CmsController::class, 'deleteCms']);
         //user 
         Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'Users']);
-        Route::get('/admins', [App\Http\Controllers\Admin\UserController::class, 'Admins']);
-
-        Route::post('/update-admin-status', [App\Http\Controllers\Admin\UserController::class, 'updateAdminStatus']);
         Route::post('/update-user-status', [App\Http\Controllers\Admin\UserController::class, 'updateUserStatus']);
+        //view users charts
+        Route::get('/view-users-chart', [App\Http\Controllers\Admin\UserController::class, 'viewUserChart']);
+
+        //admin
+        Route::get('/admins', [App\Http\Controllers\Admin\AdminController::class, 'Admins']);
+        Route::post('/update-admin-status', [App\Http\Controllers\Admin\AdminController::class, 'updateAdminStatus']);
+        Route::get('/delete-admin/{id}', [App\Http\Controllers\Admin\AdminController::class, 'deleteAdmin']);
+        Route::match(['get','post'],'/add-edit-admin/{id?}', [App\Http\Controllers\Admin\AdminController::class, 'addEditAdmin']);
+        Route::get('/delete-admin-image/{id}', [App\Http\Controllers\Admin\AdminController::class, 'deleteAdminProfileImage']);
+        //admin role update-role
+        Route::match(['get','post'],'/update-role/{id}', [App\Http\Controllers\Admin\AdminController::class, 'updateRole']);
+
         //site settings
         Route::match(['get','post'],'/site-settings',  [App\Http\Controllers\Admin\SiteSettingController::class, 'SiteSettings']);
 
@@ -135,6 +148,8 @@ Route::namespace('Front')->group(function(){
     Route::get('/search-products', [App\Http\Controllers\Front\ProductController::class, 'listing']);
     //rating
     Route::match(['get','post'],'/add-rating', [App\Http\Controllers\Front\RatingController::class, 'addRating']);
+    //custom tailor
+    Route::get('/custom-tailors', [App\Http\Controllers\Front\CustomTailorController::class, 'customTailors']);
 
     Route::group(['middleware' => ['auth']], function () {
 

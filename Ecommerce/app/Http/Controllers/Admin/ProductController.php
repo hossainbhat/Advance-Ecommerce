@@ -10,10 +10,11 @@ use App\Models\Product;
 use App\Models\Section;
 use App\Models\Brand;
 use App\Models\ProductsImage;
+use App\Models\AdminsRole;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
-// use Session;
-// use Image;
+use Auth;
+
 class ProductController extends Controller
 {
     public function products(){
@@ -23,12 +24,39 @@ class ProductController extends Controller
        },'section'=>function($query){
           $query->select('id','name');
        }])->get();
-       return view("admin.product.products")->with(compact("products"));
+
+       $productModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+       if(Auth::guard('admin')->user()->type == "superadmin"){
+           $productModul['view_access'] = 1;
+           $productModul['edit_access'] = 1;
+           $productModul['full_access'] = 1;
+       }else if($productModulCount == 0){
+           $message ="The Feature is restried for you !";
+           Session::flash('error_message',$message);
+           return redirect("admin/dashboard");
+       }else{
+           $productModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+
+       }
+       return view("admin.product.products")->with(compact("products","productModul"));
    }
 
         public function addEditProduct(Request $request, $id=null){
 
-            if ($id=="") {
+            $productModulCount = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->count();
+            if(Auth::guard('admin')->user()->type == "superadmin"){
+                $productModul['view_access'] = 1;
+                $productModul['edit_access'] = 1;
+                $productModul['full_access'] = 1;
+            }else if($productModulCount == 0){
+                $message ="The Feature is restried for you !";
+                Session::flash('error_message',$message);
+                return redirect("admin/dashboard");
+            }else{
+                $productModul = AdminsRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'category'])->first()->toArray();
+     
+            }
+            if($id=="") {
             $name ="Add Product";
             $product = new Product;
             $productdata = array();
@@ -197,7 +225,7 @@ class ProductController extends Controller
         //show brand
         $brands = Brand::where('status',1)->get();
 
-        return view("admin.product.add_edit_product")->with(compact("name","fabricArray","sleeveArray","patternArray","fitArray","occsionArray","categories","productdata","brands"));
+        return view("admin.product.add_edit_product")->with(compact("productModul","name","fabricArray","sleeveArray","patternArray","fitArray","occsionArray","categories","productdata","brands"));
     }
 
     public function updateProductStatus(Request $request){

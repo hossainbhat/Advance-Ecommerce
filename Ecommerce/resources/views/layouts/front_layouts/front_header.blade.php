@@ -55,6 +55,7 @@
 					<button type="submit">Go</button>
 		          </form>
 		          <ul class="nav pull-right">
+				  <li><a href="{{url('custom-tailors')}}">Custom Tailorz</a></li>
 				  <li><a href="{{url('contact')}}">Contact</a></li>
 				  <li class="divider-vertical"></li>
 					@if(Auth::check())

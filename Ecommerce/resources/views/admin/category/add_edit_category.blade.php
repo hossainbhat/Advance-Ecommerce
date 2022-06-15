@@ -13,7 +13,7 @@
 				<div class="row">
 					<div class="col-xl-9 mx-auto">
 						<h6 class="mb-0 text-uppercase">{{$name}}</h6>                        
-						<a href="{{url('admin/brands')}}" style="float:right; margin-top:-30px;"><button class="btn btn-sm btn-success">Brand List <i class="lni lni-list"></i></button></a>
+						<a href="{{url('admin/brands')}}" style="float:right; margin-top:-30px;"><button class="btn btn-sm btn-success">Category List <i class="lni lni-list"></i></button></a>
 
 						<hr>
 						<div class="card">

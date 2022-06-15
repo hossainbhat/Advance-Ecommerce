@@ -34,8 +34,8 @@
                                     @csrf
                                     
 										<div class="col-md-9">
-											<label for="name" class="form-label">name</label>
-											<input type="text" name="name" class="form-control" id="name" placeholder="Enter name" @if(!empty($branddata['name'])) value="{{$branddata['name']}}" @else value="{{ old('name')}}" @endif>
+											<label for="name" class="form-label">Brand Name</label>
+											<input type="text" name="name" class="form-control" id="name" placeholder="Enter brand name" @if(!empty($branddata['name'])) value="{{$branddata['name']}}" @else value="{{ old('name')}}" @endif>
 										</div>
                                        
 										

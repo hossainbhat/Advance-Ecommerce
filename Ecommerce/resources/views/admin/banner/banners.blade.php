@@ -27,8 +27,10 @@
                                         <th>Link</th>
                                         <th>Title</th>
                                         <th>Alt</th>
+										@if($bannerModul['edit_access'] == 1 || $bannerModul['full_access'] ==1)
                                         <th>Status</th>
 										<th width="10%">Modify</th>
+										@endif 
 									</tr>
 								</thead>
 								<tbody>
@@ -39,6 +41,7 @@
                                         <td>{{$banner['link']}}</td>
                                         <td>{{$banner['title']}}</td>
                                         <td>{{$banner['alt']}}</td>
+										@if($bannerModul['edit_access'] == 1 || $bannerModul['full_access'] ==1)
                                         <td>
                                             @if($banner['status'] ==1)
 												<a class="updateBannerStatus" id="banner-{{$banner->id}}" banner_id="{{$banner->id}}" href="javascript:void(0)">Active</a>  
@@ -47,10 +50,12 @@
 											@endif
                                         </td>
                                         <td>
-                                            <a href="{{url('admin/add-edit-banner/'.$banner['id'])}}"><button type="button" class="btn btn-success btn-sm"><i class="fadeIn animated bx bx-edit"></i></button></a>  
-
-                                            <a class="confirmDelete btn btn-danger btn-sm" record="banner" recoedid="{{$banner->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="fadeIn animated bx bx-trash-alt"></i></a>
+                                            <a href="{{url('admin/add-edit-banner/'.$banner['id'])}}"><i class="btn btn-success btn-sm fadeIn animated bx bx-edit"></i></a>  
+											@if($bannerModul['full_access'] ==1)
+                                            <a class="confirmDelete" record="banner" recoedid="{{$banner->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="btn btn-danger btn-sm fadeIn animated bx bx-trash-alt"></i></a>
+											@endif 
                                         </td>
+										@endif 
                                     </tr>
                                     @endforeach
 								</tbody>

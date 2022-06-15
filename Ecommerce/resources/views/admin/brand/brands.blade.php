@@ -23,9 +23,11 @@
 								<thead>
 									<tr>
 										<th width="10%">SL#</th>
-										<th>Name</th>
+										<th>Brand Name</th>
+										@if($brandModul['edit_access'] == 1 || $brandModul['full_access'] ==1)
 										<th width="10%">Status</th>
 										<th width="10%">Modify</th>
+										@endif 
 									</tr>
 								</thead>
 								<tbody>
@@ -33,19 +35,24 @@
                                     <tr>
 										<td>{{$key+1}}</td>
 										<td>{{$brand['name']}}</td>
-										<td>
-											@if($brand['status'] ==1)
-												<a class="updateBrandStatus" id="brand-{{$brand->id}}" brand_id="{{$brand->id}}" href="javascript:void(0)">Active</a>  
-											@else
-												<a class="updateBrandStatus" id="brand-{{$brand->id}}" brand_id="{{$brand->id}}" href="javascript:void(0)">Inactive</a>  
-											@endif
-										</td>
-										<td>
-											<a href="{{url('admin/add-edit-brand/'.$brand['id'])}}"><button type="button" class="btn btn-success btn-sm"><i class="fadeIn animated bx bx-edit"></i></button></a>  
-
-											<a class="confirmDelete btn btn-danger btn-sm" record="brand" recoedid="{{$brand->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="fadeIn animated bx bx-trash-alt"></i></a>
+										@if($brandModul['edit_access'] == 1 || $brandModul['full_access'] ==1)
+											<td>
+												@if($brand['status'] ==1)
+													<a class="updateBrandStatus" id="brand-{{$brand->id}}" brand_id="{{$brand->id}}" href="javascript:void(0)">Active</a>  
+												@else
+													<a class="updateBrandStatus" id="brand-{{$brand->id}}" brand_id="{{$brand->id}}" href="javascript:void(0)">Inactive</a>  
+												@endif
 											</td>
+										
+											<td>
+												<a href="{{url('admin/add-edit-brand/'.$brand['id'])}}"><i class="btn btn-success btn-sm fadeIn animated bx bx-edit"></i></a>  
+												@if($brandModul['full_access'] ==1)
+												<a class="confirmDelete" record="brand" recoedid="{{$brand->id}}" href="javascript:void('0')" style="font-size: 16px;"><i class="btn btn-danger btn-sm fadeIn animated bx bx-trash-alt"></i></a>
+												@endif 
+											</td>
+										@endif 
 									</tr> 
+									
                                 @endforeach
 									
 								</tbody>

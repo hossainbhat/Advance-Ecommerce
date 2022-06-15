@@ -240,7 +240,7 @@
                                                     <a href="{{url($product['product_id'])}}"><img style="width:80px;height:90px;" src="{{asset('backEnd/images/products/small/'.$getProductImage)}}" alt=""></a>
                                                 </td>
                                                 <td>{{$product['product_code']}}</td>
-                                                <td>{{$product['product_name']}}</td>
+                                                <td><a href="{{url($product['product_id'])}}">{{$product['product_name']}}</a></td>
                                                 <td>{{$product['product_size']}}</td>
                                                 <td>{{$product['product_color']}}</td>
                                                 <td>{{$product['product_qty']}}</td>
